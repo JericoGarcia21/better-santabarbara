@@ -2,6 +2,9 @@
 
 This guide covers deploying your local government website to various platforms, with a focus on Vercel (recommended) and other alternatives.
 
+Run frontend commands from the `front-end/` directory unless a section says
+otherwise. The root `vercel.json` already points Vercel to this directory.
+
 ## 🌟 Recommended: Deploy to Vercel
 
 Vercel is the recommended platform for local government websites because it offers:
@@ -228,7 +231,7 @@ aws_region = "ap-southeast-1"
 bucket_name = "your-city-gov-website"
 
 # Path to built files (relative to terraform directory)
-dist_folder_path = "../dist"
+dist_folder_path = "../front-end/dist"
 
 # Optional: Custom tags
 tags = {

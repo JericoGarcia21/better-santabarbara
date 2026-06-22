@@ -8,16 +8,18 @@
 @theme {
   --font-serif: Georgia, 'Times New Roman', serif;
 
-  --color-primary-50: #e6f0fd;
-  --color-primary-100: #cce0fb;
-  --color-primary-200: #99c2f7;
-  --color-primary-300: #66a3f3;
-  --color-primary-400: #3385ef;
-  --color-primary-500: #0066eb;
-  --color-primary-600: #0052bc;
-  --color-primary-700: #003d8d;
-  --color-primary-800: #00295e;
-  --color-primary-900: #00142f;
+  --color-primary-50: #eef3ff;
+  --color-primary-100: #dce7ff;
+  --color-primary-200: #b9ceff;
+  --color-primary-300: #88acff;
+  --color-primary-400: #4d7dff;
+  --color-primary-500: #0032a0;
+  --color-primary-600: #002b8a;
+  --color-primary-700: #002170;
+  --color-primary-800: #00184f;
+  --color-primary-900: #000f33;
+
+  --color-brand-yellow: #f2c91d;
 
   --color-secondary-50: #ffede6;
   --color-secondary-100: #ffdbcc;
@@ -112,6 +114,41 @@
 @theme inline {
   --font-sans: var(--font-kapwa-sans);
   --font-mono: var(--font-kapwa-mono);
+}
+
+html,
+body,
+#root {
+  min-width: 0;
+  width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--scroll-reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Checklist styling */

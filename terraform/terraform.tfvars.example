@@ -9,7 +9,7 @@ aws_region = "ap-southeast-1"
 bucket_name = "naga-city-albay-website"
 
 # Path to your built dist folder (relative to terraform directory)
-dist_folder_path = "../dist"
+dist_folder_path = "../front-end/dist"
 
 # Optional: Custom tags for your resources
 tags = {

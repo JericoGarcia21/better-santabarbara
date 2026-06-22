@@ -45,6 +45,7 @@ A modern, multilingual, and accessible website template designed specifically fo
 4. **Install dependencies**
 
    ```bash
+   cd front-end
    npm install
    # or
    yarn install
@@ -96,6 +97,7 @@ A modern, multilingual, and accessible website template designed specifically fo
    git clone https://github.com/YOUR-USERNAME/betterlocalgov.git
    cd betterlocalgov
    git remote add upstream https://github.com/iyanski/betterlocalgov.git
+   cd front-end
    npm install
    ```
 
@@ -145,6 +147,8 @@ A modern, multilingual, and accessible website template designed specifically fo
 
 ### Available Scripts
 
+Run frontend commands from the `front-end/` directory.
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
@@ -154,25 +158,25 @@ A modern, multilingual, and accessible website template designed specifically fo
 - `npm run setup` - Run setup script for new installations
 - `npm run convert-yaml` - Convert YAML to JSON
 - `npm run dev:yaml` - Convert YAML and start dev server
+- `npm run sync:psgc` - Refresh Santa Barbara barangay names and codes
 
 ### Project Structure
 
 ```
-content/
-├── government/         # Government section markdown & YAML
-│   └── departments/    # Department pages (executive, legislative, etc.)
-└── services/           # Services section markdown & YAML
+front-end/
+├── content/
+│   ├── government/     # Government section markdown & YAML
+│   └── services/       # Services section markdown & YAML
+├── public/             # Static assets and translations
+└── src/
+    ├── components/     # Reusable UI components
+    ├── data/           # YAML and municipal data
+    ├── i18n/           # Internationalization
+    ├── lib/            # Content and utility loaders
+    ├── pages/          # Application pages
+    └── types/          # TypeScript type definitions
 
-src/
-├── components/         # Reusable UI components
-│   ├── home/           # Home page components
-│   ├── layout/         # Layout components (Navbar, Footer)
-│   └── ui/             # Basic UI components
-├── data/               # YAML configuration (services.yaml, government.yaml)
-├── i18n/               # Internationalization
-├── lib/                # Utility functions (markdownLoader, yamlLoader)
-├── pages/              # Page components (Home, Services, Government, Document)
-└── types/              # TypeScript type definitions
+terraform/              # Repository-level deployment infrastructure
 ```
 
 ## 👥 Contributors

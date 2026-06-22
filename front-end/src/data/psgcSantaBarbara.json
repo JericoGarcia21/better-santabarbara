@@ -1,0 +1,164 @@
+{
+  "source": {
+    "name": "PSGC public API mirror",
+    "url": "https://psgc.gitlab.io/api/cities-municipalities/015538000/barangays/",
+    "retrievedAt": "2026-06-21"
+  },
+  "municipality": {
+    "name": "Santa Barbara",
+    "code": "015538000",
+    "psgc10DigitCode": "0105538000",
+    "provinceCode": "015500000",
+    "regionCode": "010000000",
+    "islandGroupCode": "luzon"
+  },
+  "barangays": [
+    {
+      "name": "Alibago",
+      "code": "015538001",
+      "psgc10DigitCode": "0105538001"
+    },
+    {
+      "name": "Balingueo",
+      "code": "015538002",
+      "psgc10DigitCode": "0105538002"
+    },
+    {
+      "name": "Banaoang",
+      "code": "015538003",
+      "psgc10DigitCode": "0105538003"
+    },
+    {
+      "name": "Banzal",
+      "code": "015538004",
+      "psgc10DigitCode": "0105538004"
+    },
+    {
+      "name": "Botao",
+      "code": "015538005",
+      "psgc10DigitCode": "0105538005"
+    },
+    {
+      "name": "Cablong",
+      "code": "015538006",
+      "psgc10DigitCode": "0105538006"
+    },
+    {
+      "name": "Carusocan",
+      "code": "015538007",
+      "psgc10DigitCode": "0105538007"
+    },
+    {
+      "name": "Dalongue",
+      "code": "015538008",
+      "psgc10DigitCode": "0105538008"
+    },
+    {
+      "name": "Erfe",
+      "code": "015538009",
+      "psgc10DigitCode": "0105538009"
+    },
+    {
+      "name": "Gueguesangen",
+      "code": "015538010",
+      "psgc10DigitCode": "0105538010"
+    },
+    {
+      "name": "Leet",
+      "code": "015538011",
+      "psgc10DigitCode": "0105538011"
+    },
+    {
+      "name": "Malanay",
+      "code": "015538012",
+      "psgc10DigitCode": "0105538012"
+    },
+    {
+      "name": "Maningding",
+      "code": "015538013",
+      "psgc10DigitCode": "0105538013"
+    },
+    {
+      "name": "Maronong",
+      "code": "015538014",
+      "psgc10DigitCode": "0105538014"
+    },
+    {
+      "name": "Maticmatic",
+      "code": "015538015",
+      "psgc10DigitCode": "0105538015"
+    },
+    {
+      "name": "Minien East",
+      "code": "015538016",
+      "psgc10DigitCode": "0105538016"
+    },
+    {
+      "name": "Minien West",
+      "code": "015538017",
+      "psgc10DigitCode": "0105538017"
+    },
+    {
+      "name": "Nilombot",
+      "code": "015538018",
+      "psgc10DigitCode": "0105538018"
+    },
+    {
+      "name": "Patayac",
+      "code": "015538019",
+      "psgc10DigitCode": "0105538019"
+    },
+    {
+      "name": "Payas",
+      "code": "015538020",
+      "psgc10DigitCode": "0105538020"
+    },
+    {
+      "name": "Poblacion Norte",
+      "code": "015538021",
+      "psgc10DigitCode": "0105538021"
+    },
+    {
+      "name": "Poblacion Sur",
+      "code": "015538022",
+      "psgc10DigitCode": "0105538022"
+    },
+    {
+      "name": "Sapang",
+      "code": "015538023",
+      "psgc10DigitCode": "0105538023"
+    },
+    {
+      "name": "Sonquil",
+      "code": "015538024",
+      "psgc10DigitCode": "0105538024"
+    },
+    {
+      "name": "Tebag East",
+      "code": "015538025",
+      "psgc10DigitCode": "0105538025"
+    },
+    {
+      "name": "Tebag West",
+      "code": "015538026",
+      "psgc10DigitCode": "0105538026"
+    },
+    {
+      "name": "Tuliao",
+      "code": "015538027",
+      "psgc10DigitCode": "0105538027"
+    },
+    {
+      "name": "Ventinilla",
+      "oldName": "Ventinilla East",
+      "code": "015538028",
+      "psgc10DigitCode": "0105538028"
+    },
+    {
+      "name": "Primicias",
+      "oldName": "Ventinilla West",
+      "code": "015538029",
+      "psgc10DigitCode": "0105538029"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { cn } from '../../lib/utils';
+import ScrollReveal from './ScrollReveal';
 export default function Section({
   children,
   className,
@@ -10,7 +11,9 @@ export default function Section({
 }) {
   return (
     <section className={cn('py-12 bg-white', className)} id={id}>
-      <div className={cn('container mx-auto px-4', className)}>{children}</div>
+      <ScrollReveal className="container mx-auto min-w-0 px-4">
+        {children}
+      </ScrollReveal>
     </section>
   );
 }

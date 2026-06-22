@@ -12,7 +12,7 @@ variable "bucket_name" {
 variable "dist_folder_path" {
   description = "Path to the dist folder containing built assets"
   type        = string
-  default     = "../dist"
+  default     = "../front-end/dist"
 }
 
 variable "tags" {
