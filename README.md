@@ -1,334 +1,185 @@
-# 🏛️ Local Government Website Starter Kit
+# BetterGov Santa Barbara
 
-A modern, multilingual, and accessible website template designed specifically for local government units (LGUs) in the Philippines. Built with React, TypeScript, and Tailwind CSS.
+A community-maintained civic information portal for the Municipality of Santa
+Barbara, Pangasinan. The site brings local services, government information,
+municipal history, barangay references, maps, demographics, and transparency
+resources into one accessible website.
 
-## ✨ Features
+> **Independent community project:** This website was created by a private
+> citizen of Santa Barbara and is not an official portal of the Municipality of
+> Santa Barbara. Information is compiled from public and open-source datasets
+> and may not reflect the LGU's latest records. Verify critical information
+> directly with the municipal government.
 
-- **🌐 Multilingual Support**: English, Filipino, Cebuano, and other Philippine languages
-- **📱 Responsive Design**: Mobile-first approach with modern UI/UX
-- **♿ Accessibility**: WCAG 2.1 compliant design
-- **📝 Content Management**: YAML-based content system for easy updates
-- **🎨 Customizable**: Easy theming and branding customization
-- **⚡ Fast Performance**: Built with Vite for optimal loading speeds
-- **🔍 SEO Optimized**: Built-in SEO with react-helmet, meta tags, and Open Graph support
+## Features
 
-## 🚀 Quick Start
+- Responsive React interface for desktop and mobile devices
+- Municipal profile, history, officials, and 29-barangay directory
+- Interactive OpenStreetMap map with municipal and barangay references
+- Service and government directories backed by YAML and Markdown
+- English, Filipino/Tagalog, and Pangasinan interface translations
+- Transparency-document section
+- Accessible semantic components and keyboard-friendly navigation
+- SEO metadata and production-ready Vite build
 
-### Prerequisites
+## Technology
 
-- Node.js 18+
-- npm or yarn
+- React 19 and TypeScript
+- Vite 7
+- Tailwind CSS 4
+- React Router
+- i18next and react-i18next
+- Leaflet and React Leaflet
+- React Markdown with GitHub-flavored Markdown
+- Lucide icons
+
+## Getting started
+
+### Requirements
+
+- Node.js 20 or newer
+- npm
 - Git
 
-### Installation
-
-1. **Fork the repository**
-   - Visit https://github.com/iyanski/betterlocalgov
-   - Click the "Fork" button in the top right
-   - This creates your own copy of the repository
-
-2. **Clone your forked repository**
-
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/betterlocalgov.git
-   cd betterlocalgov
-   ```
-
-   Replace `YOUR-USERNAME` with your GitHub username.
-
-3. **Add upstream remote** (to get updates from the original repo)
-
-   ```bash
-   git remote add upstream https://github.com/iyanski/betterlocalgov.git
-   ```
-
-4. **Install dependencies**
-
-   ```bash
-   cd front-end
-   npm install
-   # or
-   yarn install
-   ```
-
-5. **Run the setup script**
-
-   ```bash
-   npm run setup
-   ```
-
-   This will guide you through configuring your government's information.
-
-6. **Start development server**
-
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-7. **Open your browser**
-   Navigate to `http://localhost:5173`
-
-## 📚 Documentation
-
-- **[STARTER-KIT-README.md](STARTER-KIT-README.md)** - Complete setup and customization guide
-- **[CONTENT-GUIDE.md](CONTENT-GUIDE.md)** - Content writing and contribution guidelines
-- **[CONTENT-MANAGEMENT.md](CONTENT-MANAGEMENT.md)** - Guide for non-technical users to edit and manage website content
-- **[DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md)** - Deployment instructions for Vercel and other platforms
-- **[STARTER-KIT-SUMMARY.md](STARTER-KIT-SUMMARY.md)** - Audit results and implementation summary
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
-
-## 🎯 Perfect For
-
-- **Local Government Units** (Cities, Municipalities, Provinces)
-- **Government IT Departments** looking for modern web solutions
-- **Web Development Agencies** serving government clients
-- **Civic Technology Organizations** building government tools
-- **Government Officials** wanting professional online presence
-
-## ⚡ Quick Setup (3-5 hours to live website)
-
-1. **Fork & Clone** (5 minutes)
-   - Fork the repository on GitHub (click "Fork" at https://github.com/iyanski/betterlocalgov)
-   - Clone your fork:
-
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/betterlocalgov.git
-   cd betterlocalgov
-   git remote add upstream https://github.com/iyanski/betterlocalgov.git
-   cd front-end
-   npm install
-   ```
-
-   Replace `YOUR-USERNAME` with your GitHub username.
-
-2. **Configure Your Government** (15 minutes)
-
-   ```bash
-   npm run setup
-   # Interactive setup guides you through configuration
-   ```
-
-3. **Customize Content** (2-4 hours)
-   - Edit service information in `content/services/`
-   - Add government department info in `content/government/`
-   - Update contact information and branding
-
-4. **Deploy to Production** (15 minutes)
-   - Connect to Vercel for free hosting
-   - Set up custom domain (optional)
-   - Your website is live!
-
-## 🌟 What Makes This Different
-
-### **Built for Philippine LGUs**
-
-- **Multilingual**: English, Filipino, Cebuano, and other local languages
-- **Local Context**: Designed for Philippine government structure
-- **Cultural Sensitivity**: Respects local customs and practices
-- **Accessibility**: WCAG 2.1 compliant for all citizens
-
-### **Non-Technical Friendly**
-
-- **YAML Content Management**: Easy content updates without coding
-- **Visual Setup**: Interactive configuration process
-- **Clear Documentation**: Step-by-step guides for everything
-- **Template System**: Pre-built content templates
-
-### **Modern & Professional**
-
-- **Mobile-First**: Works perfectly on all devices
-- **Fast Loading**: Optimized for performance
-- **SEO Ready**: Built-in search engine optimization
-- **Secure**: Modern security best practices
-
-## 🛠️ Development
-
-### Available Scripts
-
-Run frontend commands from the `front-end/` directory.
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
-- `npm run format` - Format code with Prettier
-- `npm run setup` - Run setup script for new installations
-- `npm run convert-yaml` - Convert YAML to JSON
-- `npm run dev:yaml` - Convert YAML and start dev server
-- `npm run sync:psgc` - Refresh Santa Barbara barangay names and codes
-
-### Project Structure
-
-```
-front-end/
-├── content/
-│   ├── government/     # Government section markdown & YAML
-│   └── services/       # Services section markdown & YAML
-├── public/             # Static assets and translations
-└── src/
-    ├── components/     # Reusable UI components
-    ├── data/           # YAML and municipal data
-    ├── i18n/           # Internationalization
-    ├── lib/            # Content and utility loaders
-    ├── pages/          # Application pages
-    └── types/          # TypeScript type definitions
-
-terraform/              # Repository-level deployment infrastructure
-```
-
-## 👥 Contributors
-
-- **[iyanski](https://github.com/iyanski)** — Project creator and maintainer
-- **[Nicu Listana](https://github.com/niculistana)** — Contributor
-
-## 🤝 Contributing
-
-We welcome contributions from everyone! Whether you're a developer, government official, or community member, there are many ways to help improve this project.
-
-### 🌟 For Non-Technical Contributors
-
-**No coding experience required!** You can contribute valuable content and improvements using GitHub's web interface.
-
-#### Quick Start for Non-Technical Users
-
-1. **Create a GitHub account** (free at github.com)
-2. **Navigate to the repository** in your web browser
-3. **Use our detailed guide**: [CONTENT-MANAGEMENT.md](CONTENT-MANAGEMENT.md) - Complete step-by-step instructions for editing content without any technical knowledge
-
-#### What You Can Contribute
-
-- **📝 Content Updates**: Fix outdated information, add new services, improve descriptions
-- **🌐 Translations**: Help translate content to Filipino, Cebuano, or other local languages
-- **📋 Service Information**: Add details about government services, requirements, and processes
-- **🔍 Content Review**: Check for accuracy, clarity, and completeness
-- **💡 Suggestions**: Propose new features or improvements
-
-#### How to Contribute (No Git Required)
-
-1. **Find content to edit**:
-   - Go to `content/services/` for service pages or `content/government/` for department pages
-   - Choose a category (health, education, business, departments, etc.)
-   - Click on any `.md` file to edit
-
-2. **Make your changes**:
-   - Click the pencil icon (✏️) to edit
-   - Update the content using simple text formatting
-   - Add new information, fix errors, or improve clarity
-
-3. **Save your changes**:
-   - Write a brief description of what you changed
-   - Click "Commit changes"
-   - Your changes will be reviewed and merged
-
-#### Content Types You Can Edit
-
-- **Service Descriptions**: How to apply for permits, scholarships, health services
-- **Requirements**: Documents needed, eligibility criteria, deadlines
-- **Contact Information**: Office locations, phone numbers, hours
-- **Process Steps**: Step-by-step instructions for government services
-- **Translations**: Help make content available in local languages
-
-### 👨‍💻 For Technical Contributors
-
-#### Content Contributors (Basic Technical)
-
-1. **Fork the repository** on GitHub (click "Fork" at https://github.com/iyanski/betterlocalgov)
-2. **Clone your fork**: `git clone https://github.com/YOUR-USERNAME/betterlocalgov.git`
-3. **Add upstream remote**: `git remote add upstream https://github.com/iyanski/betterlocalgov.git`
-4. **Create a content branch**: `git checkout -b content/update-health-services`
-5. **Edit content files** in `content/`
-6. **Test your changes**: `npm run dev`
-7. **Submit a pull request** to the original repository
-
-#### Developers
-
-1. **Fork the repository** on GitHub (click "Fork" at https://github.com/iyanski/betterlocalgov)
-2. **Clone your fork**: `git clone https://github.com/YOUR-USERNAME/betterlocalgov.git`
-3. **Add upstream remote**: `git remote add upstream https://github.com/iyanski/betterlocalgov.git`
-4. **Create a feature branch**: `git checkout -b feature/new-component`
-5. **Make your changes**
-6. **Run tests**: `npm run lint && npm run build`
-7. **Submit a pull request** to the original repository
-
-#### Keeping Your Fork Updated
-
-To get the latest changes from the original repository:
+### Local development
 
 ```bash
-# Fetch the latest changes from upstream
-git fetch upstream
-
-# Switch to your main branch
-git checkout main
-
-# Merge upstream changes into your main branch
-git merge upstream/main
-
-# Push updates to your fork on GitHub
-git push origin main
+git clone <repository-url>
+cd better-santabarbara/front-end
+npm install
+npm run dev
 ```
 
-**Best Practice**: Always sync your fork before creating a new branch for contributions.
+Open [http://localhost:5173](http://localhost:5173).
 
-### 📋 Contribution Guidelines
+All npm commands must be run from `front-end/`.
 
-#### Content Guidelines
+## Commands
 
-- **Accuracy First**: Ensure all information is current and correct
-- **Clear Language**: Write for the general public, avoid jargon
-- **Complete Information**: Include all necessary details (requirements, steps, contacts)
-- **Local Context**: Consider the specific needs of your community
-- **Accessibility**: Use clear headings, simple language, and logical structure
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Type-check and create a production build |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix supported lint problems |
+| `npm run format` | Format the project with Prettier |
+| `npm run format:check` | Check formatting without changing files |
+| `npm run dev:yaml` | Convert YAML data, then start development |
+| `npm run convert-yaml` | Convert YAML content to JSON |
+| `npm run sync:psgc` | Refresh PSGC barangay names and codes |
+| `npm run setup` | Run the interactive starter configuration |
 
-#### Technical Guidelines
+## Project structure
 
-- Follow existing code style and patterns
-- Test your changes thoroughly
-- Update documentation when needed
-- Ensure mobile responsiveness
-- Maintain accessibility standards
+```text
+better-santabarbara/
+├── front-end/
+│   ├── content/
+│   │   ├── government/       Government pages and category indexes
+│   │   └── services/         Service pages and category indexes
+│   ├── public/
+│   │   └── locales/          Runtime translation files
+│   ├── scripts/              Setup and data-maintenance scripts
+│   └── src/
+│       ├── components/       UI, layout, and home-page components
+│       ├── data/             Municipal, navigation, YAML, and map data
+│       ├── i18n/             Supported-language configuration
+│       ├── lib/              Markdown and utility modules
+│       ├── pages/            Route-level React pages
+│       └── types/            Shared TypeScript types
+├── terraform/                Deployment infrastructure
+└── vercel.json               Vercel configuration
+```
 
-### 🎯 Priority Areas for Contribution
+## Content management
 
-1. **Content Accuracy**: Update outdated information, fix errors
-2. **Localization**: Translate content to Filipino, Cebuano, and other Philippine languages
-3. **Service Coverage**: Add missing government services and programs
-4. **User Experience**: Improve clarity and ease of use
-5. **Accessibility**: Ensure content is accessible to all citizens
+Service and government content lives under `front-end/content/`.
 
-### 🆘 Need Help?
+Each category contains an `index.yaml` file and one or more Markdown pages:
 
-- **For Content Questions**: Check [CONTENT-MANAGEMENT.md](CONTENT-MANAGEMENT.md)
-- **For Technical Issues**: Open an issue on GitHub
-- **For General Questions**: Contact the project maintainers
+```text
+content/services/<category>/index.yaml
+content/services/<category>/<page>.md
+```
 
-### 🏆 Recognition
+Top-level categories are defined in:
 
-All contributors are recognized in our project documentation. Your contributions help make government services more accessible to all citizens!
+- `front-end/src/data/services.yaml`
+- `front-end/src/data/government.yaml`
 
-## 📄 License
+New categories also require a static mapping in
+`front-end/src/data/yamlLoader.ts`. See [CONTENT-GUIDE.md](CONTENT-GUIDE.md)
+and [CONTENT-MANAGEMENT.md](CONTENT-MANAGEMENT.md) for detailed instructions.
 
-This project is licensed under the Creative Commons Zero (CC0) License - see the [LICENSE](LICENSE) file for details.
+### Markdown variables
 
-**CC0 License Benefits:**
+A Markdown page may have a companion JSON file with the same filename. Values
+in that file replace `{PLACEHOLDER}` tokens at load time. If a value is absent,
+the loader checks a matching `VITE_<PLACEHOLDER>` environment variable.
 
-- **Public Domain**: No restrictions on use, modification, or distribution
-- **Government Friendly**: Perfect for public sector projects
-- **Maximum Reusability**: Anyone can use, modify, and distribute freely
-- **No Attribution Required**: Though attribution is appreciated
+## Languages
 
-## 🙏 Acknowledgments
+The interface supports:
 
-- Built with [React](https://reactjs.org/)
-- Styled with [Tailwind CSS v4](https://tailwindcss.com/)
-- UI components by [@bettergov/kapwa](https://github.com/bettergov/kapwa)
-- Icons by [Lucide React](https://lucide.dev/)
-- Content management with [YAML](https://yaml.org/)
-- Internationalization with [i18next](https://www.i18next.com/)
+- English (`en`)
+- Filipino/Tagalog (`fil`)
+- Pangasinan (`pag`)
 
----
+Translation files are stored in `front-end/public/locales/<language>/common.json`.
+The selected language is saved in the browser. Long-form Markdown documents
+remain in their authored language until reviewed translations are contributed.
 
-**Made with ❤️ for Philippine Local Government Units**
+## Data sources
+
+The portal uses public data and community-maintained summaries, including:
+
+- Philippine Statistics Authority census and PSGC references
+- PhilAtlas demographic information
+- geoBoundaries administrative boundaries
+- OpenStreetMap contributors
+- Province of Pangasinan and municipal public information
+
+The displayed 2024 municipal population is **92,420**. A verified 2024
+barangay-level population breakdown is not currently included; older barangay
+population figures are not presented as current data.
+
+See [DATA-SOURCES.md](DATA-SOURCES.md) for source details and limitations.
+
+## Quality checks
+
+Before submitting a change, run:
+
+```bash
+cd front-end
+npm run lint
+npm run build
+```
+
+The pre-commit hook runs ESLint and Prettier against staged files.
+
+## Deployment
+
+The repository includes `vercel.json` and Terraform infrastructure. For
+deployment options and environment configuration, see
+[DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md).
+
+## Contributing
+
+Contributions that improve accuracy, accessibility, translations, service
+coverage, and local information are welcome.
+
+1. Create a focused branch.
+2. Make and verify the change.
+3. Cite authoritative sources for factual updates.
+4. Run lint and the production build.
+5. Open a pull request explaining the change.
+
+Do not present unverified community information as an official LGU record.
+
+## License
+
+This project is released under the [CC0 1.0 Universal](LICENSE) public-domain
+dedication.
+
+**Cost to the People of Santa Barbara: ₱0.**
