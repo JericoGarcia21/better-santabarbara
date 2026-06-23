@@ -1,6 +1,18 @@
 {
   "site_name": "Municipality of Santa Barbara Portal",
   "site_description": "A community-run portal for Santa Barbara, Pangasinan",
+  "navigation": {
+    "home": "Home",
+    "lgu": "LGU",
+    "aboutLgu": "About the LGU",
+    "localOfficials": "Local Officials",
+    "barangays": "Barangays",
+    "mapDemographics": "Map & Demographics",
+    "services": "Services",
+    "government": "Government",
+    "transparency": "Transparency",
+    "weatherAlerts": "Weather & Alerts"
+  },
   "hero": {
     "title": "Welcome to BetterGov.ph",
     "subtitle": "A community-run portal for Santa Barbara, Pangasinan local government information",
@@ -11,7 +23,8 @@
   "services": {
     "title": "Services & Information",
     "governmentServices": "Government Services",
-    "description": "Access official government services quickly and easily. Find what you need for citizenship, business, education, and more.",
+    "description": "Explore available information about local services for residents, businesses, students, and families.",
+    "availabilityNote": "Service information is provisional. Verified procedures, requirements, fees, and contact details will be published after coordination with the Municipality of Santa Barbara.",
     "viewAll": "View All Services",
     "viewAllCategory": "View All"
   },

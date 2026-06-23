@@ -9,6 +9,8 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
+    supportedLngs: ['en', 'fil', 'pag'],
+    nonExplicitSupportedLngs: false,
     debug: import.meta.env.DEV,
     defaultNS: 'common',
     ns: ['common'],

@@ -1,4 +1,5 @@
-import { ArrowRight, Building2, MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, Building2, Info, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   localGovernment,
@@ -7,11 +8,19 @@ import {
 import ScrollReveal from '../ui/ScrollReveal';
 
 export default function Hero() {
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowDisclaimer(false), 10000);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <section
         id="top"
-        className="scroll-mt-28 bg-gradient-to-br from-primary-500 to-[#003d82] px-4 py-16 text-center text-white md:py-20"
+        className="relative scroll-mt-28 bg-gradient-to-br from-primary-500 to-[#003d82] px-4 pb-40 pt-16 text-center text-white sm:pb-32 md:pt-20"
       >
         <ScrollReveal className="mx-auto max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/20">
@@ -42,6 +51,25 @@ export default function Hero() {
             </Link>
           </div>
         </ScrollReveal>
+        <div
+          role="note"
+          aria-label="Data disclaimer"
+          className={`absolute inset-x-4 bottom-5 z-10 mx-auto flex max-w-4xl items-start gap-3 rounded-lg border border-[#f2c91d]/50 bg-primary-950/95 px-4 py-3 text-left shadow-xl backdrop-blur-sm transition-all duration-700 sm:items-center sm:px-5 ${
+            showDisclaimer
+              ? 'translate-y-0 opacity-100'
+              : 'pointer-events-none translate-y-2 opacity-0'
+          }`}
+        >
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#f2c91d] sm:mt-0" />
+          <p className="text-xs leading-5 text-white/90 sm:text-sm sm:leading-6">
+            <strong className="text-white">Disclaimer:</strong> Information on
+            this portal is compiled from publicly available open-source data and
+            may not reflect the latest records of the Municipality of Santa
+            Barbara. This independent community portal was created by a private
+            citizen of Santa Barbara and is not an official LGU data portal.
+            Please verify critical information with the municipal government.
+          </p>
+        </div>
       </section>
 
       <section

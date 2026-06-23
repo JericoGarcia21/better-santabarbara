@@ -6,6 +6,7 @@ import { mainNavigation } from '../../data/navigation';
 import { LANGUAGES } from '../../i18n/languages';
 import type { LanguageType } from '../../types/index';
 import SiteBrand from './SiteBrand';
+import LiveCivicData from './LiveCivicData';
 
 const EMERGENCY_HOTLINES = [
   { label: 'PNP', numbers: ['0998-598-5120', '0929-510-9148'] },
@@ -16,10 +17,27 @@ const EMERGENCY_HOTLINES = [
   { label: 'MSWD', numbers: ['633-33-50'] },
 ];
 
+const navigationTranslationKeys: Record<string, string> = {
+  LGU: 'lgu',
+  'About the LGU': 'aboutLgu',
+  'Local Officials': 'localOfficials',
+  Barangays: 'barangays',
+  'Map & Demographics': 'mapDemographics',
+  Services: 'services',
+  Government: 'government',
+  Transparency: 'transparency',
+  'Weather & Alerts': 'weatherAlerts',
+};
+
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const { i18n } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+
+  const translateNavigation = (label: string) => {
+    const key = navigationTranslationKeys[label];
+    return key ? t(`navigation.${key}`) : label;
+  };
 
   const closeMenu = () => {
     setIsOpen(false);
@@ -65,7 +83,8 @@ const Navbar: React.FC = () => {
 
       {/* ── 2. Combined branding + nav bar ── */}
       <div className="border-b-2 border-[#f2c91d] bg-primary-700">
-        <div className="container mx-auto flex h-20 items-center justify-between gap-4 px-4">
+        <div className="flex h-20 w-full items-center justify-between gap-4 px-6">
+          <LiveCivicData />
           {/* Logo */}
           <Link to="/#top" onClick={closeMenu} className="shrink-0">
             <SiteBrand />
@@ -73,22 +92,22 @@ const Navbar: React.FC = () => {
 
           {/* Desktop nav — centred */}
           <nav
-            className="hidden flex-1 items-center justify-center gap-6 lg:flex"
+            className="hidden flex-1 items-center justify-center gap-4 lg:flex xl:gap-5"
             aria-label="Main navigation"
           >
             <Link
               to="/#top"
               className="text-sm font-medium text-white transition-colors hover:text-[#f2c91d]"
             >
-              Home
+              {t('navigation.home')}
             </Link>
             {mainNavigation.map(item => (
               <div key={item.label} className="group relative">
                 <Link
                   to={item.href}
-                  className="flex items-center gap-0.5 text-sm font-medium text-white transition-colors hover:text-[#f2c91d]"
+                  className="flex items-center gap-0.5 whitespace-nowrap text-sm font-medium text-white transition-colors hover:text-[#f2c91d]"
                 >
-                  {item.label}
+                  {translateNavigation(item.label)}
                   {item.children && (
                     <ChevronDown className="h-3.5 w-3.5 opacity-60" />
                   )}
@@ -101,7 +120,7 @@ const Navbar: React.FC = () => {
                         to={child.href}
                         className="block px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-primary-50 hover:text-primary-600"
                       >
-                        {child.label}
+                        {translateNavigation(child.label)}
                       </Link>
                     ))}
                   </div>
@@ -174,7 +193,7 @@ const Navbar: React.FC = () => {
             onClick={closeMenu}
             className="block border-b border-gray-100 py-2.5 text-sm font-medium text-gray-800"
           >
-            Home
+            {t('navigation.home')}
           </Link>
           {mainNavigation.map(item => (
             <div key={item.label} className="border-b border-gray-100">
@@ -184,7 +203,7 @@ const Navbar: React.FC = () => {
                   onClick={closeMenu}
                   className="flex-1 py-2.5 text-sm font-medium text-gray-800"
                 >
-                  {item.label}
+                  {translateNavigation(item.label)}
                 </Link>
                 {item.children && (
                   <button
@@ -214,7 +233,7 @@ const Navbar: React.FC = () => {
                       onClick={closeMenu}
                       className="block px-4 py-2 text-sm text-gray-600"
                     >
-                      {child.label}
+                      {translateNavigation(child.label)}
                     </Link>
                   ))}
                 </div>

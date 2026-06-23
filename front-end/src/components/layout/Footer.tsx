@@ -36,14 +36,15 @@ const Footer: React.FC = () => {
               Santa Barbara, Pangasinan.
             </p>
             <p className="mb-5 inline-flex rounded-full border border-[#f2c91d]/40 bg-[#f2c91d]/10 px-3 py-1.5 text-sm font-semibold text-[#f2c91d]">
-              Cost to the People of the Philippines: ₱0.
+              Cost to the People of Santa Barbara: ₱0.
             </p>
             <p className="mb-5 text-xs leading-5 text-gray-500">
               Disclaimer: Information on this portal is compiled from publicly
               available open-source data and may not reflect the latest records
-              of the Municipality of Santa Barbara. This is not an official LGU
-              data portal. Please verify critical information with the municipal
-              government.
+              of the Municipality of Santa Barbara. This independent community
+              portal was created by a private citizen of Santa Barbara and is
+              not an official LGU data portal. Please verify critical
+              information with the municipal government.
             </p>
             <div className="flex space-x-4">
               {footerNavigation.socialLinks.map(link => (

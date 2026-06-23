@@ -1,0 +1,38 @@
+{
+  "site_name": "Portal na Baley na Santa Barbara",
+  "site_description": "Portal na komunidad parad Santa Barbara, Pangasinan",
+  "navigation": {
+    "home": "Abung",
+    "lgu": "Lokal a Gobierno",
+    "aboutLgu": "Nipaakar ed LGU",
+    "localOfficials": "Saray Lokal ya Opisyal",
+    "barangays": "Saray Barangay",
+    "mapDemographics": "Mapa tan Demograpiya",
+    "services": "Saray Serbisyo",
+    "government": "Gobierno",
+    "transparency": "Transparensiya",
+    "weatherAlerts": "Panahon tan Saray Pasakbay"
+  },
+  "hero": {
+    "title": "Maabig ya onsabi ed BetterGov.ph",
+    "subtitle": "Portal na komunidad parad impormasyon nipaakar ed lokal a gobierno na Santa Barbara, Pangasinan",
+    "nationalId": "National ID",
+    "birthCertificate": "Sertipiko na Inkianak",
+    "businessRegistration": "Rehistro na Negosyo"
+  },
+  "services": {
+    "title": "Saray Serbisyo tan Impormasyon",
+    "governmentServices": "Saray Serbisyo na Gobierno",
+    "description": "Nengnengen a mainomay iray serbisyo tan impormasyon ya kaukolan yo.",
+    "availabilityNote": "Temporaryo ni so impormasyon ed saray serbisyo. Ipapaway iray napaseguro a proseso, kakaukolanen, bayad, tan contact details kayari na koordinasyon ed Baley na Santa Barbara.",
+    "viewAll": "Nengnengen Amin ya Serbisyo",
+    "viewAllCategory": "Nengnengen Amin"
+  },
+  "governmentActivity": {
+    "title": "Lokal a Gobierno",
+    "description": "Amtaen iray opisina, opisyal, tan aktibidad na lokal a gobierno."
+  },
+  "footer": {
+    "copyright": "© 2026 BetterGov. Publikon kayarian so amin ya linaon no anggapoy sananey a tanda."
+  }
+}

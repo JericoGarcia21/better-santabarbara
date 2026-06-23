@@ -45,6 +45,13 @@ export default function ServicesSection({
       <Text className="text-gray-600 mb-6">
         {description || t('services.description')}
       </Text>
+      <div
+        role="note"
+        className="mb-8 flex items-start gap-3 rounded-lg border border-[#f2c91d]/60 bg-[#f2c91d]/10 px-4 py-3 text-sm leading-6 text-gray-700"
+      >
+        <LucideIcons.Info className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
+        <p>{t('services.availabilityNote')}</p>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {displayedCategories.map(category => (

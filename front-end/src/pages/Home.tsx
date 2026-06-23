@@ -16,7 +16,7 @@ const Home: React.FC = () => {
       />
       <main className="flex-grow">
         <Hero />
-        <LocationDemographicsSection />
+        <LocationDemographicsSection showForecast={false} />
         <LocalGovernmentProfile />
         <ServicesSection />
         <GovernmentActivitySection />

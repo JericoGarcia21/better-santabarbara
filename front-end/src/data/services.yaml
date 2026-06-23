@@ -22,6 +22,12 @@ categories:
     description: 'What permits and clearances you need, where to pay taxes or renew permits, and what livelihood or trade opportunities are offered.'
     icon: 'Building2'
 
+  # Jobs and Opportunities
+  - category: 'Jobs & Opportunities'
+    slug: 'jobs-opportunities'
+    description: 'Where residents will be able to find verified job openings, job fairs, skills training, student employment, and livelihood opportunities.'
+    icon: 'BriefcaseBusiness'
+
   # Social Welfare Services
   - category: 'Social Welfare'
     slug: 'social-welfare'

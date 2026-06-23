@@ -7,6 +7,7 @@ import ScrollToTop from './components/ui/ScrollToTop';
 import Services from './pages/Services';
 import Document from './pages/Document';
 import Government from './pages/Government';
+import LocationWeather from './pages/LocationWeather';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               />
               <Route path="/government/:category" element={<Government />} />
               <Route path="/government" element={<Government />} />
+              <Route path="/location-weather" element={<LocationWeather />} />
               <Route
                 path="/government/:category/:documentSlug"
                 element={<Document categoryType="government" />}

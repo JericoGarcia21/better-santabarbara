@@ -1,0 +1,38 @@
+{
+  "site_name": "Portal ng Munisipalidad ng Santa Barbara",
+  "site_description": "Portal ng komunidad para sa Santa Barbara, Pangasinan",
+  "navigation": {
+    "home": "Tahanan",
+    "lgu": "Pamahalaang Lokal",
+    "aboutLgu": "Tungkol sa LGU",
+    "localOfficials": "Mga Lokal na Opisyal",
+    "barangays": "Mga Barangay",
+    "mapDemographics": "Mapa at Demograpiya",
+    "services": "Mga Serbisyo",
+    "government": "Pamahalaan",
+    "transparency": "Transparensiya",
+    "weatherAlerts": "Panahon at mga Babala"
+  },
+  "hero": {
+    "title": "Maligayang pagdating sa BetterGov.ph",
+    "subtitle": "Portal ng komunidad para sa impormasyon tungkol sa pamahalaang lokal ng Santa Barbara, Pangasinan",
+    "nationalId": "Pambansang ID",
+    "birthCertificate": "Sertipiko ng Kapanganakan",
+    "businessRegistration": "Pagpaparehistro ng Negosyo"
+  },
+  "services": {
+    "title": "Mga Serbisyo at Impormasyon",
+    "governmentServices": "Mga Serbisyo ng Pamahalaan",
+    "description": "Mabilis at madaling hanapin ang mga serbisyo at impormasyong kailangan mo.",
+    "availabilityNote": "Pansamantala pa ang impormasyong ito. Ilalathala ang beripikadong proseso, kinakailangan, bayarin, at contact details pagkatapos makipag-ugnayan sa Munisipalidad ng Santa Barbara.",
+    "viewAll": "Tingnan ang Lahat ng Serbisyo",
+    "viewAllCategory": "Tingnan Lahat"
+  },
+  "governmentActivity": {
+    "title": "Pamahalaang Lokal",
+    "description": "Kilalanin ang mga tanggapan, opisyal, at gawain ng pamahalaang lokal."
+  },
+  "footer": {
+    "copyright": "© 2026 BetterGov. Ang nilalaman ay pampublikong domain maliban kung may ibang pahayag."
+  }
+}

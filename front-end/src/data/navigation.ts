@@ -33,6 +33,10 @@ export const mainNavigation: NavigationItem[] = [
         label: 'Map & Demographics',
         href: '/#location-demographics',
       },
+      {
+        label: 'Weather & Alerts',
+        href: '/location-weather#weather-alerts',
+      },
     ],
   },
   {

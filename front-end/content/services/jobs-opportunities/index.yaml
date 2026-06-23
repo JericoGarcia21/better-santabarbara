@@ -1,0 +1,16 @@
+title: 'Jobs & Opportunities'
+description: 'Employment, training, and livelihood information for Santa Barbara residents. Listings will be published after verification with the appropriate LGU office or PESO.'
+layout: 'list'
+
+pages:
+  - name: 'Find local jobs and job fairs'
+    slug: 'find-local-jobs-and-job-fairs'
+    description: 'Check where verified vacancies, recruitment activities, and job fairs will be posted.'
+
+  - name: 'Join skills and livelihood training'
+    slug: 'join-skills-and-livelihood-training'
+    description: 'Learn about future verified training and livelihood opportunities for residents.'
+
+  - name: 'Explore student and youth opportunities'
+    slug: 'explore-student-and-youth-opportunities'
+    description: 'Find information about verified student employment, internships, and youth programs.'
