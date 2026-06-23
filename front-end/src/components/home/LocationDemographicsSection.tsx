@@ -1,19 +1,20 @@
-import { ExternalLink, Home, MapPin, TrendingUp, Users } from 'lucide-react';
+import { ExternalLink, MapPin, TrendingUp, Users } from 'lucide-react';
 import {
   CircleMarker,
   GeoJSON,
   MapContainer,
   Popup,
   TileLayer,
+  Tooltip,
   ZoomControl,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
   localGovernment,
-  localGovernmentBarangays,
   localGovernmentProfile,
 } from '../../data/localGovernment';
 import { santaBarbaraBoundary } from '../../data/santaBarbaraBoundary';
+import { santaBarbaraBarangayLocations } from '../../data/santaBarbaraBarangays';
 import { Heading } from '../ui/Heading';
 import Section from '../ui/Section';
 import { Text } from '../ui/Text';
@@ -22,30 +23,34 @@ const fullMapUrl =
   'https://www.openstreetmap.org/?mlat=15.9999&mlon=120.4051#map=12/15.9999/120.4051';
 
 const mapCenter: [number, number] = [15.9999, 120.4051];
+const santaBarbaraBounds: [[number, number], [number, number]] = [
+  [15.9485, 120.3773],
+  [16.0291, 120.4924],
+];
 
 const demographicStats = [
   {
-    label: '2020 population',
-    value: localGovernment.population2020,
-    note: 'Philippine census count',
+    label: '2024 population',
+    value: localGovernment.population2024,
+    note: '2024 Census of Population',
     icon: Users,
   },
   {
     label: 'Population density',
-    value: localGovernment.density2020,
+    value: localGovernment.density2024,
     note: `Across ${localGovernment.landAreaSquareKm} km2`,
     icon: MapPin,
   },
   {
-    label: '2015 households',
-    value: localGovernmentProfile.households2015.households,
-    note: `${localGovernmentProfile.households2015.averageHouseholdSize} people on average`,
-    icon: Home,
+    label: 'Barangays',
+    value: String(localGovernment.barangays),
+    note: 'Municipal communities',
+    icon: MapPin,
   },
   {
-    label: '2015-2020 growth',
-    value: localGovernmentProfile.populationGrowth.growthRate2015To2020,
-    note: `Increase of ${localGovernmentProfile.populationGrowth.increase2015To2020}`,
+    label: '2020-2024 change',
+    value: localGovernmentProfile.populationGrowth.growthRate2020To2024,
+    note: `Increase of ${localGovernmentProfile.populationGrowth.increase2020To2024} residents`,
     icon: TrendingUp,
   },
 ];
@@ -59,21 +64,14 @@ const populationSeries = [
   {
     year: '2020',
     value: localGovernmentProfile.populationGrowth.census2020,
+    percent: 99.75,
+  },
+  {
+    year: '2024',
+    value: localGovernmentProfile.populationGrowth.census2024,
     percent: 100,
   },
 ];
-
-const largestBarangays = [...localGovernmentBarangays]
-  .sort(
-    (a, b) =>
-      Number(b.population2020.replace(',', '')) -
-      Number(a.population2020.replace(',', ''))
-  )
-  .slice(0, 5);
-
-const largestBarangayPopulation = Number(
-  largestBarangays[0].population2020.replace(',', '')
-);
 
 export default function LocationDemographicsSection() {
   return (
@@ -91,15 +89,14 @@ export default function LocationDemographicsSection() {
 
       <div className="grid min-w-0 gap-8 lg:grid-cols-5">
         <div className="min-w-0 lg:col-span-3">
-          <div className="relative isolate aspect-[4/3] min-w-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100 shadow-sm sm:aspect-[16/10]">
+          <div className="relative isolate h-[560px] min-w-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100 shadow-sm sm:h-[620px]">
             <MapContainer
               center={mapCenter}
-              bounds={[
-                [15.942, 120.37],
-                [16.036, 120.5],
-              ]}
-              boundsOptions={{ padding: [20, 20] }}
-              minZoom={9}
+              bounds={santaBarbaraBounds}
+              boundsOptions={{ padding: [8, 8] }}
+              maxBounds={santaBarbaraBounds}
+              maxBoundsViscosity={1}
+              minZoom={12}
               maxZoom={18}
               scrollWheelZoom={false}
               zoomControl={false}
@@ -107,9 +104,32 @@ export default function LocationDemographicsSection() {
               aria-label="Interactive map highlighting Santa Barbara, Pangasinan"
             >
               <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+              {santaBarbaraBarangayLocations.map(barangay => (
+                <CircleMarker
+                  key={barangay.name}
+                  center={[barangay.position[0], barangay.position[1]]}
+                  radius={3}
+                  interactive={false}
+                  pathOptions={{
+                    color: '#ffffff',
+                    fillColor: '#0032a0',
+                    fillOpacity: 1,
+                    weight: 1,
+                  }}
+                >
+                  <Tooltip
+                    permanent
+                    direction="top"
+                    offset={[0, -3]}
+                    className="barangay-map-label"
+                  >
+                    {barangay.name}
+                  </Tooltip>
+                </CircleMarker>
+              ))}
               <GeoJSON
                 data={santaBarbaraBoundary}
                 style={() => ({
@@ -224,35 +244,19 @@ export default function LocationDemographicsSection() {
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <div className="rounded-md border border-gray-200 bg-white p-5">
           <h3 className="text-base font-semibold text-gray-900">
-            Largest barangays by population
+            2024 census snapshot
           </h3>
-          <p className="mt-1 text-sm text-gray-500">2020 Census</p>
-          <div className="mt-5 space-y-4">
-            {largestBarangays.map(barangay => {
-              const population = Number(
-                barangay.population2020.replace(',', '')
-              );
-              return (
-                <div key={barangay.name}>
-                  <div className="mb-1.5 flex justify-between gap-4 text-sm">
-                    <span className="font-medium text-gray-700">
-                      {barangay.name}
-                    </span>
-                    <span className="font-semibold text-gray-900">
-                      {barangay.population2020}
-                    </span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div
-                      className="h-full rounded-full bg-[#f2c91d]"
-                      style={{
-                        width: `${(population / largestBarangayPopulation) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+          <p className="mt-1 text-sm text-gray-500">
+            Municipality of Santa Barbara
+          </p>
+          <div className="mt-5 text-4xl font-bold text-primary-500">
+            {localGovernment.population2024}
+          </div>
+          <div className="mt-2 text-sm text-gray-600">residents</div>
+          <div className="mt-6 border-t border-gray-100 pt-5 text-sm leading-6 text-gray-600">
+            Population density is {localGovernment.density2024} across{' '}
+            {localGovernment.landAreaSquareKm} km2 and{' '}
+            {localGovernment.barangays} barangays.
           </div>
         </div>
 

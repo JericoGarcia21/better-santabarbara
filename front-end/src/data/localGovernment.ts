@@ -10,8 +10,9 @@ export const localGovernment = {
   barangays: 29,
   landAreaHectares: '6,548',
   landAreaSquareKm: '61.37',
+  population2024: '92,420',
   population2020: '92,187',
-  density2020: '1,502/km2',
+  density2024: '1,502/km2',
   postalCode: '2419',
   islandGroup: 'Luzon',
   psgc: psgcSnapshot.municipality,
@@ -21,8 +22,12 @@ export const localGovernment = {
   elevationMeters: '9.4',
   distanceFromCapitalKm: 24,
   distanceFromManilaKm: '167.87',
+  address: 'Maningding, Santa Barbara, Pangasinan 2419, Philippines',
+  telephone: '(075) 649 2523',
+  email: 'stabarbarapang@gmail.com',
   website: 'https://stabarbarapangasinan.gov.ph',
-  facebook: 'https://www.facebook.com/santabarbarapangasinan',
+  facebook: 'https://www.facebook.com/MunicipalityOfSta.BarbaraOfficial',
+  map: 'https://www.bing.com/maps/default.aspx?v=2&where1=Maningding%2C%20Santa%20Barbara%2C%20Philippines%2C%202419',
   sources: {
     psgcOfficial: 'https://psa.gov.ph/classification/psgc',
     psgcApi: psgcSnapshot.source.url,
@@ -33,13 +38,46 @@ export const localGovernment = {
       'https://www.pangasinan.gov.ph/city-municipalities/santa-barbara/',
     demographics:
       'https://www.philatlas.com/luzon/r01/pangasinan/santa-barbara.html',
+    wikipedia: 'https://en.wikipedia.org/wiki/Santa_Barbara,_Pangasinan',
   },
   historySummary:
-    'Santa Barbara was once called Tolong, named after the river now known as the Sinocalan River. The municipality is recognized as one of the early pueblos established by Spanish conquistadores in Pangasinan.',
+    'Long before it became Santa Barbara, the riverine settlement was known as Tolong, after its principal waterway—now called the Sinocalan River. It stood in the fertile Agno Valley within the ancient territory of Luyag na Kabuloan.',
   revolutionSummary:
-    'During the Filipino Revolution, Santa Barbara served as the headquarters of Katipunan forces in Pangasinan led by Daniel Maramba, a Santa Barbara native.',
+    'During the Philippine Revolution against Spain, Santa Barbara became the headquarters of Katipunan forces in central Pangasinan under Daniel Maramba, a native of the town.',
   civicSummary:
     "A central-plains municipality in Pangasinan with 29 barangays, Santa Barbara is part of the province's 3rd District and sits about 24 kilometers from Lingayen.",
+  about:
+    'Officially the Municipality of Santa Barbara, the town is called Baley na Santa Barbara in Pangasinan, Ili ti Santa Barbara in Ilocano, and Bayan ng Santa Barbara in Filipino. It is a first-class municipality whose communities are spread across 29 barangays.',
+  geographySummary:
+    'Santa Barbara lies on the plains of the Agno Valley near Dagupan, Urdaneta, and San Carlos. Its central location and road connections have helped it develop as both an agricultural community and a growing suburban municipality.',
+  economySummary:
+    'Agriculture remains central to local life. Rice is the principal crop, while Santa Barbara is also known for mango seedling nurseries. Food processing, pottery and clay tiles, construction materials, and other small industries support the local economy.',
+  historyTimeline: [
+    {
+      date: 'Before Spanish rule',
+      title: 'The settlement of Tolong',
+      description:
+        'Early riverine communities settled along the Tolong and nearby waterways. The settlement took its name from the river now known as the Sinocalan River.',
+    },
+    {
+      date: '1580',
+      title: 'Organized as an early pueblo',
+      description:
+        "Spanish conquistadores organized Tolong as one of Pangasinan's early pueblos to administer the area and collect tribute.",
+    },
+    {
+      date: '1741',
+      title: 'Santa Barbara de Tolong',
+      description:
+        'A church community was established with Saint Barbara as patron. The town became known as Santa Barbara de Tolong and later shortened its name to Santa Barbara.',
+    },
+    {
+      date: 'Philippine Revolution',
+      title: 'Katipunan headquarters',
+      description:
+        'Santa Barbara served as the headquarters of Katipunan forces in central Pangasinan led by local revolutionary commander Daniel Maramba.',
+    },
+  ],
   heritageSites: [
     'Santa Barbara Parish of the Holy Family Church',
     'Daniel Maramba Historical Marker',
@@ -108,8 +146,11 @@ export const localGovernmentProfile = {
   populationGrowth: {
     census2015: '82,012',
     census2020: localGovernment.population2020,
+    census2024: localGovernment.population2024,
     increase2015To2020: '10,175',
     growthRate2015To2020: '2.49%',
+    increase2020To2024: '233',
+    growthRate2020To2024: '0.25%',
   },
   households2015: {
     householdPopulation: '81,928',
@@ -153,7 +194,7 @@ export const localGovernmentFacts = [
   },
   {
     label: 'Population',
-    value: `${localGovernment.population2020} residents`,
+    value: `${localGovernment.population2024} residents (2024 census)`,
   },
   {
     label: 'Land area',

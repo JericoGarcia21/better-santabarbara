@@ -1,8 +1,15 @@
-import { Building2, Database, Landmark, MapPin, Users } from 'lucide-react';
+import {
+  CalendarDays,
+  Database,
+  Landmark,
+  MapPin,
+  Quote,
+  Sprout,
+  Users,
+} from 'lucide-react';
 import {
   localGovernment,
   localGovernmentBarangays,
-  localGovernmentProfile,
 } from '../../data/localGovernment';
 import { Heading } from '../ui/Heading';
 import Section from '../ui/Section';
@@ -12,24 +19,29 @@ import OfficialsDirectory from './OfficialsDirectory';
 
 const profileStats = [
   {
+    label: 'Founded',
+    value: 'October 30, 1741',
+    icon: CalendarDays,
+  },
+  {
     label: 'Postal code',
     value: localGovernment.postalCode,
     icon: MapPin,
   },
   {
+    label: '2024 census population',
+    value: localGovernment.population2024,
+    icon: Users,
+  },
+  {
     label: 'Population density',
-    value: localGovernment.density2020,
+    value: localGovernment.density2024,
     icon: Users,
   },
   {
     label: 'Elevation',
     value: `${localGovernment.elevationMeters} m`,
     icon: MapPin,
-  },
-  {
-    label: '2016 revenue',
-    value: localGovernmentProfile.economy.annualRegularRevenue2016,
-    icon: Building2,
   },
 ];
 
@@ -41,10 +53,16 @@ const dataSources = [
     href: localGovernment.sources.psgcOfficial,
   },
   {
-    source: 'PSA OpenSTAT and 2020 Census',
+    source: 'PSA 2024 Census of Population',
     coverage: 'Population and demographic statistics',
-    status: '2020 census figures integrated',
+    status: '2024 municipal census total integrated',
     href: localGovernment.sources.psaOpenStat,
+  },
+  {
+    source: 'Santa Barbara, Pangasinan overview',
+    coverage: 'Municipal history, geography, and economy',
+    status: 'Wikipedia overview consulted and summarized',
+    href: localGovernment.sources.wikipedia,
   },
   {
     source: 'geoBoundaries 2020 ADM3',
@@ -62,52 +80,145 @@ const dataSources = [
 
 export default function LocalGovernmentProfile() {
   return (
-    <Section id="municipal-profile" className="bg-gray-50">
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <Heading level={2}>About Santa Barbara</Heading>
-          <Text className="text-gray-700">
-            {localGovernment.historySummary}
-          </Text>
-          <Text className="text-gray-700">
-            {localGovernment.revolutionSummary}
-          </Text>
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {profileStats.map(stat => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={stat.label}
-                  className="rounded-md border border-gray-200 border-t-4 border-t-[#f2c91d] bg-white p-4"
-                >
-                  <Icon className="mb-3 h-5 w-5 text-primary-600" />
-                  <div className="text-sm text-gray-500">{stat.label}</div>
-                  <div className="mt-1 font-semibold text-gray-900">
-                    {stat.value}
-                  </div>
-                </div>
-              );
-            })}
+    <Section id="municipal-profile" className="overflow-hidden bg-white">
+      <ScrollReveal>
+        <div className="relative overflow-hidden rounded-[2rem] bg-primary-900 text-white shadow-xl shadow-primary-950/10">
+          <div className="absolute -right-8 -top-16 select-none font-serif text-[12rem] font-black leading-none text-white/[0.04] sm:text-[18rem]">
+            1741
+          </div>
+          <div className="relative grid lg:grid-cols-[1.25fr_0.75fr]">
+            <div className="p-7 sm:p-10 lg:p-14">
+              <div className="mb-8 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-[#f2c91d]">
+                <span className="h-px w-10 bg-[#f2c91d]" />
+                Municipal portrait
+              </div>
+              <Heading level={2} className="max-w-xl text-white">
+                About Santa Barbara
+              </Heading>
+              <p className="max-w-2xl text-xl leading-8 text-primary-50 sm:text-2xl sm:leading-9">
+                {localGovernment.about}
+              </p>
+              <div className="mt-10 border-l-2 border-[#f2c91d] pl-5">
+                <Quote className="mb-3 h-5 w-5 text-[#f2c91d]" />
+                <p className="max-w-xl leading-7 text-primary-100">
+                  {localGovernment.historySummary}
+                </p>
+                <p className="mt-4 max-w-xl leading-7 text-primary-100">
+                  {localGovernment.revolutionSummary}
+                </p>
+              </div>
+            </div>
+
+            <aside className="border-t border-white/10 bg-black/10 p-7 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
+              <div className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.18em] text-[#f2c91d]">
+                <Landmark className="h-5 w-5" />
+                Living heritage
+              </div>
+              <ul className="mt-6 divide-y divide-white/10">
+                {localGovernment.heritageSites.map((site, index) => (
+                  <li key={site} className="flex gap-4 py-5 first:pt-0">
+                    <span className="font-serif text-3xl text-white/30">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="pt-1 font-medium leading-6 text-white">
+                      {site}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
           </div>
         </div>
 
+        <div className="relative z-10 mx-4 -mt-4 grid overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg sm:mx-8 sm:grid-cols-2 lg:mx-12 lg:grid-cols-5">
+          {profileStats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <div
+                key={stat.label}
+                className={`p-5 sm:p-6 ${
+                  index > 0 ? 'border-t border-gray-100 sm:border-t-0' : ''
+                } ${index % 2 ? 'sm:border-l' : ''} lg:border-l lg:first:border-l-0`}
+              >
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <Icon className="h-4 w-4 text-primary-600" />
+                  {stat.label}
+                </div>
+                <div className="mt-3 text-lg font-bold text-gray-950">
+                  {stat.value}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal className="mt-20 grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
         <div>
-          <Heading level={3}>Heritage</Heading>
-          <div className="rounded border border-gray-200 bg-white p-5">
-            <Landmark className="mb-3 h-5 w-5 text-primary-600" />
-            <ul className="grid gap-2 text-sm text-gray-800">
-              {localGovernment.heritageSites.map(site => (
-                <li key={site}>{site}</li>
-              ))}
-            </ul>
+          <div className="sticky top-32">
+            <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary-700">
+              Tolong to Santa Barbara
+            </div>
+            <Heading level={3} className="mt-3 text-4xl">
+              A brief history
+            </Heading>
+            <Text className="max-w-sm text-gray-600">
+              A river settlement, an early pueblo, and a center of
+              resistance—four moments that shaped the municipality known today.
+            </Text>
           </div>
         </div>
-      </div>
+
+        <div className="relative ml-3 border-l border-primary-300 pb-2 sm:ml-5">
+          {localGovernment.historyTimeline.map((event, index) => (
+            <article
+              key={`${event.date}-${event.title}`}
+              className="relative pb-12 pl-8 last:pb-0 sm:pl-12"
+            >
+              <span className="absolute -left-[9px] top-1 h-[17px] w-[17px] rounded-full border-4 border-white bg-primary-700 ring-1 ring-primary-300" />
+              <div className="mb-2 flex items-baseline gap-4">
+                <span className="font-serif text-2xl font-bold text-primary-800">
+                  {event.date}
+                </span>
+                <span className="text-xs font-bold text-gray-400">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h4 className="text-xl font-bold text-gray-950 sm:text-2xl">
+                {event.title}
+              </h4>
+              <p className="mt-3 max-w-2xl leading-7 text-gray-700">
+                {event.description}
+              </p>
+            </article>
+          ))}
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="rounded-md border border-gray-200 bg-white p-5">
+          <MapPin className="mb-3 h-5 w-5 text-primary-600" />
+          <Heading level={3}>Place and connections</Heading>
+          <Text className="mb-0 text-gray-700">
+            {localGovernment.geographySummary}
+          </Text>
+        </div>
+        <div className="rounded-md border border-gray-200 bg-white p-5">
+          <Sprout className="mb-3 h-5 w-5 text-primary-600" />
+          <Heading level={3}>Local economy</Heading>
+          <Text className="mb-0 text-gray-700">
+            {localGovernment.economySummary}
+          </Text>
+        </div>
+      </ScrollReveal>
 
       <OfficialsDirectory />
 
       <ScrollReveal className="mt-10">
-        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+        <div
+          id="barangays"
+          className="scroll-mt-36 flex flex-col justify-between gap-2 sm:flex-row sm:items-end"
+        >
           <Heading level={3} className="mb-0">
             Barangays
           </Heading>
@@ -117,9 +228,10 @@ export default function LocalGovernmentProfile() {
           </div>
         </div>
         <Text className="text-gray-600">
-          The municipality has {localGovernment.barangays} barangays. Population
-          figures below are from the 2020 Census; hierarchy and codes are from
-          the PSGC snapshot dated {localGovernment.psgcSnapshotDate}.
+          The municipality has {localGovernment.barangays} barangays. The 2024
+          census population is {localGovernment.population2024}; barangay
+          hierarchy and codes are from the PSGC snapshot dated{' '}
+          {localGovernment.psgcSnapshotDate}.
         </Text>
         <div className="mt-4 overflow-x-auto rounded border border-gray-200 bg-white">
           <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
@@ -127,8 +239,6 @@ export default function LocalGovernmentProfile() {
               <tr>
                 <th className="px-4 py-3 font-semibold">Barangay</th>
                 <th className="px-4 py-3 font-semibold">PSGC code</th>
-                <th className="px-4 py-3 font-semibold">Population</th>
-                <th className="px-4 py-3 font-semibold">Share</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -145,12 +255,6 @@ export default function LocalGovernmentProfile() {
                   <td className="px-4 py-3 font-mono text-xs text-gray-700">
                     <div>{barangay.psgc10DigitCode}</div>
                     <div className="mt-0.5 text-gray-500">{barangay.code}</div>
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {barangay.population2020}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {barangay.share2020}
                   </td>
                 </tr>
               ))}

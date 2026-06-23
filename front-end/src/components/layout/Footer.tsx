@@ -35,6 +35,16 @@ const Footer: React.FC = () => {
               A community portal for residents, businesses, and visitors of
               Santa Barbara, Pangasinan.
             </p>
+            <p className="mb-5 inline-flex rounded-full border border-[#f2c91d]/40 bg-[#f2c91d]/10 px-3 py-1.5 text-sm font-semibold text-[#f2c91d]">
+              Cost to the People of the Philippines: ₱0.
+            </p>
+            <p className="mb-5 text-xs leading-5 text-gray-500">
+              Disclaimer: Information on this portal is compiled from publicly
+              available open-source data and may not reflect the latest records
+              of the Municipality of Santa Barbara. This is not an official LGU
+              data portal. Please verify critical information with the municipal
+              government.
+            </p>
             <div className="flex space-x-4">
               {footerNavigation.socialLinks.map(link => (
                 <Link
@@ -71,9 +81,15 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              {t('footer.copyright')}
-            </p>
+            <div className="mb-4 text-center text-sm text-gray-400 md:mb-0 md:text-left">
+              <p>{t('footer.copyright')}</p>
+              <p className="mt-1">
+                Developed and maintained by{' '}
+                <span className="font-medium text-gray-200">
+                  Jerico B. Garcia
+                </span>
+              </p>
+            </div>
             <div className="flex space-x-6">
               {/* <a
                 href="/privacy"

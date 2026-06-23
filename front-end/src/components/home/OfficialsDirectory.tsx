@@ -71,7 +71,10 @@ const executiveOfficials = [
 
 export default function OfficialsDirectory() {
   return (
-    <section className="mt-10 border-t border-gray-200 pt-8" id="officials">
+    <section
+      className="mt-10 scroll-mt-28 border-t border-gray-200 pt-8"
+      id="officials"
+    >
       <ScrollReveal>
         <div className="max-w-3xl">
           <div className="mb-2 text-sm font-semibold uppercase text-primary-500">

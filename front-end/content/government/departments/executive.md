@@ -146,20 +146,22 @@ These roles reflect the legacy of leadership and public service within the commu
 
 ---
 
-# Contact the Mayor's Office
+# Contact the Municipal Government
 
-**Office of the Mayor**
-City/Municipal Hall of **{GOVERNMENT_NAME}**
+**Municipality of Sta. Barbara, Pangasinan**
+Municipal Hall of the **Municipality of Sta. Barbara, Pangasinan**
 
 **Address:**
-[STREET ADDRESS]
-[CITY / PROVINCE / POSTAL CODE]
+[Maningding, Santa Barbara, Pangasinan 2419, Philippines](https://www.bing.com/maps/default.aspx?v=2&where1=Maningding%2C%20Santa%20Barbara%2C%20Philippines%2C%202419)
 
-**Telephone:**
-[PHONE NUMBER]
+**LGU Main Contact:**
+[(075) 649 2523](tel:+63756492523)
 
 **Email:**
-[EMAIL ADDRESS]
+[stabarbarapang@gmail.com](mailto:stabarbarapang@gmail.com)
 
 **Website:**
-[OFFICIAL WEBSITE URL]
+[stabarbarapangasinan.gov.ph](https://stabarbarapangasinan.gov.ph)
+
+**Facebook:**
+[Municipality of Sta. Barbara, Pangasinan](https://www.facebook.com/MunicipalityOfSta.BarbaraOfficial)

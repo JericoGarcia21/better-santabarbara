@@ -10,8 +10,8 @@ export default function Section({
   id?: string;
 }) {
   return (
-    <section className={cn('py-12 bg-white', className)} id={id}>
-      <ScrollReveal className="container mx-auto min-w-0 px-4">
+    <section className={cn('scroll-mt-28 bg-white py-12', className)} id={id}>
+      <ScrollReveal stagger className="container mx-auto min-w-0 px-4">
         {children}
       </ScrollReveal>
     </section>

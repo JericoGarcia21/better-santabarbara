@@ -8,11 +8,12 @@ import type { LanguageType } from '../../types/index';
 import SiteBrand from './SiteBrand';
 
 const EMERGENCY_HOTLINES = [
-  { label: 'Emergency', number: '911' },
-  { label: 'NDRRMC', number: '(02) 8911-5061' },
-  { label: 'PNP', number: '117' },
-  { label: 'BFP', number: '(02) 8426-0219' },
-  { label: 'Red Cross', number: '143' },
+  { label: 'PNP', numbers: ['0998-598-5120', '0929-510-9148'] },
+  { label: 'BFP', numbers: ['0917-187-8611', '523-4856'] },
+  { label: 'MDRRMO', numbers: ['0930-958-4095'] },
+  { label: 'Rural Health Unit', numbers: ['0920-722-7690'] },
+  { label: 'DECORP', numbers: ['0917-897-0562', '0925-726-9546'] },
+  { label: 'MSWD', numbers: ['633-33-50'] },
 ];
 
 const Navbar: React.FC = () => {
@@ -32,25 +33,31 @@ const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* ── 1. Ultra-thin emergency strip ── */}
-      <div className="bg-[#b71c1c] text-white">
-        <div className="container mx-auto flex items-center gap-0 overflow-x-auto px-4 py-0.5 text-[10px] scrollbar-none">
+      <div className="h-11 bg-[#b71c1c] text-white">
+        <div className="hotline-scroll container mx-auto flex h-full items-center overflow-x-auto px-4">
           {/* Label */}
-          <span className="mr-3 flex shrink-0 items-center gap-1 font-bold uppercase tracking-widest text-red-200">
-            <Phone className="h-2.5 w-2.5 animate-pulse" aria-hidden="true" />
-            Hotlines
+          <span className="mr-6 flex shrink-0 items-center gap-2 text-sm font-bold uppercase tracking-wide text-white">
+            <Phone className="h-4 w-4 animate-pulse" aria-hidden="true" />
+            Emergency Hotlines
           </span>
           {/* Hotline pills */}
-          <div className="flex items-center divide-x divide-red-600">
+          <div className="flex items-center gap-6 whitespace-nowrap">
             {EMERGENCY_HOTLINES.map(h => (
-              <a
-                key={h.label}
-                href={`tel:${h.number.replace(/\D/g, '')}`}
-                className="px-2.5 py-0.5 text-[10px] text-white/80 transition-colors hover:text-white"
-                title={`Call ${h.label}`}
-              >
-                <span className="font-semibold text-white">{h.label}</span>
-                <span className="ml-1 text-red-200">{h.number}</span>
-              </a>
+              <div key={h.label} className="flex shrink-0 items-baseline gap-2">
+                <span className="text-sm font-bold text-white">{h.label}</span>
+                {h.numbers.map((number, index) => (
+                  <React.Fragment key={number}>
+                    {index > 0 && <span className="text-red-300">•</span>}
+                    <a
+                      href={`tel:${number.replace(/\D/g, '')}`}
+                      className="text-base font-semibold text-red-100 transition-colors hover:text-white"
+                      title={`Call ${h.label}`}
+                    >
+                      {number}
+                    </a>
+                  </React.Fragment>
+                ))}
+              </div>
             ))}
           </div>
         </div>
@@ -58,9 +65,9 @@ const Navbar: React.FC = () => {
 
       {/* ── 2. Combined branding + nav bar ── */}
       <div className="border-b-2 border-[#f2c91d] bg-primary-700">
-        <div className="container mx-auto flex min-h-20 items-center justify-between gap-4 px-4 py-3">
+        <div className="container mx-auto flex h-20 items-center justify-between gap-4 px-4">
           {/* Logo */}
-          <Link to="/" onClick={closeMenu} className="shrink-0">
+          <Link to="/#top" onClick={closeMenu} className="shrink-0">
             <SiteBrand />
           </Link>
 
@@ -70,7 +77,7 @@ const Navbar: React.FC = () => {
             aria-label="Main navigation"
           >
             <Link
-              to="/"
+              to="/#top"
               className="text-sm font-medium text-white transition-colors hover:text-[#f2c91d]"
             >
               Home
@@ -101,12 +108,6 @@ const Navbar: React.FC = () => {
                 )}
               </div>
             ))}
-            <a
-              href="#location-demographics"
-              className="text-sm font-medium text-white transition-colors hover:text-[#f2c91d]"
-            >
-              Map &amp; Demographics
-            </a>
           </nav>
 
           {/* Right side: branding links + language */}
@@ -169,7 +170,7 @@ const Navbar: React.FC = () => {
           aria-label="Mobile navigation"
         >
           <Link
-            to="/"
+            to="/#top"
             onClick={closeMenu}
             className="block border-b border-gray-100 py-2.5 text-sm font-medium text-gray-800"
           >
@@ -220,14 +221,6 @@ const Navbar: React.FC = () => {
               )}
             </div>
           ))}
-          <a
-            href="#location-demographics"
-            onClick={closeMenu}
-            className="block border-b border-gray-100 py-2.5 text-sm font-medium text-gray-800"
-          >
-            Map &amp; Demographics
-          </a>
-
           {/* Mobile: branding links + language */}
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <a
@@ -264,21 +257,24 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile: hotlines compact */}
-          <div className="mt-3 rounded-md bg-red-50 px-3 py-2">
-            <p className="mb-1.5 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-red-700">
-              <Phone className="h-2.5 w-2.5" />
+          <div className="mt-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+            <p className="mb-2 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-red-800">
+              <Phone className="h-4 w-4 animate-pulse" />
               Emergency Hotlines
             </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-1">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
               {EMERGENCY_HOTLINES.map(h => (
-                <a
-                  key={h.label}
-                  href={`tel:${h.number.replace(/\D/g, '')}`}
-                  className="text-[11px] text-red-700"
-                >
+                <div key={h.label} className="text-sm text-red-800">
                   <span className="font-semibold">{h.label}</span>{' '}
-                  <span className="text-red-500">{h.number}</span>
-                </a>
+                  {h.numbers.map((number, index) => (
+                    <React.Fragment key={number}>
+                      {index > 0 && <span> · </span>}
+                      <a className="text-red-600" href={`tel:${number}`}>
+                        {number}
+                      </a>
+                    </React.Fragment>
+                  ))}
+                </div>
               ))}
             </div>
           </div>

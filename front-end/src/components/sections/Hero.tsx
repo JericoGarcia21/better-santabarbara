@@ -9,7 +9,10 @@ import ScrollReveal from '../ui/ScrollReveal';
 export default function Hero() {
   return (
     <>
-      <section className="bg-gradient-to-br from-primary-500 to-[#003d82] px-4 py-16 text-center text-white md:py-20">
+      <section
+        id="top"
+        className="scroll-mt-28 bg-gradient-to-br from-primary-500 to-[#003d82] px-4 py-16 text-center text-white md:py-20"
+      >
         <ScrollReveal className="mx-auto max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/20">
             <MapPin className="h-4 w-4 text-[#f2c91d]" />

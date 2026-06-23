@@ -14,8 +14,30 @@ interface Category {
 
 export const mainNavigation: NavigationItem[] = [
   {
+    label: 'LGU',
+    href: '/#municipal-profile',
+    children: [
+      {
+        label: 'About the LGU',
+        href: '/#municipal-profile',
+      },
+      {
+        label: 'Local Officials',
+        href: '/#officials',
+      },
+      {
+        label: 'Barangays',
+        href: '/#barangays',
+      },
+      {
+        label: 'Map & Demographics',
+        href: '/#location-demographics',
+      },
+    ],
+  },
+  {
     label: 'Services',
-    href: '/services',
+    href: '/#services',
     children: (servicesData.categories as Category[]).map(category => ({
       label: category.category,
       href: `/services/${category.slug}`,
@@ -23,7 +45,11 @@ export const mainNavigation: NavigationItem[] = [
   },
   {
     label: 'Government',
-    href: '/government/departments',
+    href: '/#government',
+  },
+  {
+    label: 'Transparency',
+    href: '/government/transparency-documents',
   },
 ];
 
@@ -71,7 +97,10 @@ export const footerNavigation = {
     },
   ],
   socialLinks: [
-    { label: 'Facebook', href: 'https://facebook.com/govph' },
+    {
+      label: 'Facebook',
+      href: 'https://www.facebook.com/MunicipalityOfSta.BarbaraOfficial',
+    },
     { label: 'Twitter', href: 'https://twitter.com/govph' },
     { label: 'Instagram', href: 'https://instagram.com/govph' },
     { label: 'YouTube', href: 'https://youtube.com/govph' },

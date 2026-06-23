@@ -5,12 +5,14 @@ interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  stagger?: boolean;
 }
 
 export default function ScrollReveal({
   children,
   className,
   delay = 0,
+  stagger = false,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -49,7 +51,12 @@ export default function ScrollReveal({
   return (
     <div
       ref={ref}
-      className={cn('scroll-reveal', isVisible && 'is-visible', className)}
+      className={cn(
+        'scroll-reveal',
+        stagger && 'scroll-reveal-stagger',
+        isVisible && 'is-visible',
+        className
+      )}
       style={{ '--scroll-reveal-delay': `${delay}ms` } as CSSProperties}
     >
       {children}

@@ -40,7 +40,7 @@ export default function ServicesSection({
   const displayedCategories = serviceCategories.categories as Category[];
 
   return (
-    <Section>
+    <Section id="services">
       <Heading level={2}>{title || t('services.title')}</Heading>
       <Text className="text-gray-600 mb-6">
         {description || t('services.description')}
