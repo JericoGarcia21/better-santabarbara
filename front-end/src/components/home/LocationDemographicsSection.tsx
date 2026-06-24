@@ -35,6 +35,7 @@ import { Text } from '../ui/Text';
 
 const fullMapUrl =
   'https://www.openstreetmap.org/?mlat=15.9999&mlon=120.4051#map=12/15.9999/120.4051';
+const panahonMapUrl = 'https://panahon.gov.ph/';
 
 const mapCenter: [number, number] = [15.9999, 120.4051];
 const santaBarbaraBounds: [[number, number], [number, number]] = [
@@ -47,28 +48,6 @@ const santaBarbaraCenter: [number, number] = [
 ];
 
 const philippinesCenter: [number, number] = [12.5, 122.0];
-
-const weatherOverlayOptions = {
-  wind: { label: 'Wind', type: 'openWeather', tile: 'wind_new' },
-  temperature: { label: 'Temperature', type: 'openWeather', tile: 'temp_new' },
-  precipitation: {
-    label: 'Precipitation',
-    type: 'openWeather',
-    tile: 'precipitation_new',
-  },
-  clouds: { label: 'Clouds', type: 'openWeather', tile: 'clouds_new' },
-  radar: { label: 'Radar', type: 'rainViewer' },
-} as const;
-
-type WeatherOverlayType = keyof typeof weatherOverlayOptions;
-
-const buildOverlayUrl = (tile: string) =>
-  import.meta.env.VITE_OPENWEATHERMAP_API_KEY
-    ? `https://tile.openweathermap.org/map/${tile}/{z}/{x}/{y}.png?appid=${import.meta.env.VITE_OPENWEATHERMAP_API_KEY}`
-    : '';
-
-const buildRainViewerUrl = (timestamp: number) =>
-  `https://tilecache.rainviewer.com/v2/radar/${timestamp}/{z}/{x}/{y}/2/1_0.png`;
 
 interface WeatherData {
   current: {
@@ -200,10 +179,6 @@ export default function LocationDemographicsSection({
   const [weatherLastUpdated, setWeatherLastUpdated] = useState<number | null>(
     null
   );
-  const [overlayType, setOverlayType] = useState<WeatherOverlayType>('wind');
-  const [rainViewerTimestamp, setRainViewerTimestamp] = useState<number | null>(
-    null
-  );
 
   const formatWeatherUpdate = (timestamp: number) =>
     new Intl.DateTimeFormat('en-PH', {
@@ -220,16 +195,9 @@ export default function LocationDemographicsSection({
   const mapMinZoom = showDemographics ? 12 : 3;
   const mapMaxZoom = showDemographics ? 18 : 10;
   const mapZoom = showDemographics ? 13 : 5;
-  const overlayData = weatherOverlayOptions[overlayType];
-
-  const weatherOverlayUrl =
-    overlayData.type === 'openWeather' && overlayData.tile
-      ? buildOverlayUrl(overlayData.tile)
-      : '';
-  const rainViewerUrl =
-    overlayData.type === 'rainViewer' && rainViewerTimestamp
-      ? buildRainViewerUrl(rainViewerTimestamp)
-      : '';
+  const mapContainerHeightClass = showDemographics
+    ? 'h-[560px] sm:h-[620px]'
+    : 'h-[760px] sm:h-[860px]';
 
   useEffect(() => {
     const controller = new AbortController();
@@ -238,31 +206,16 @@ export default function LocationDemographicsSection({
 
     const loadWeather = async () => {
       try {
-        const [weatherResponse, rainViewerResponse] = await Promise.all([
-          fetch(weatherUrl, { signal: controller.signal }),
-          fetch('https://api.rainviewer.com/public/maps.json', {
-            signal: controller.signal,
-          }),
-        ]);
+        const weatherResponse = await fetch(weatherUrl, {
+          signal: controller.signal,
+        });
 
         if (!weatherResponse.ok) throw new Error('Weather request failed');
-        if (!rainViewerResponse.ok)
-          throw new Error('RainViewer metadata request failed');
 
         const weatherData = (await weatherResponse.json()) as WeatherData;
-        const rainViewerData = (await rainViewerResponse.json()) as {
-          radar: { nowcast: Array<{ time: number }> };
-        };
 
         setWeather(weatherData);
         setWeatherLastUpdated(Date.now());
-        const latestFrame =
-          rainViewerData.radar.nowcast?.[
-            rainViewerData.radar.nowcast.length - 1
-          ];
-        if (latestFrame) {
-          setRainViewerTimestamp(latestFrame.time);
-        }
       } catch (error) {
         if (error instanceof Error && error.name !== 'AbortError') {
           setWeatherUnavailable(true);
@@ -302,44 +255,28 @@ export default function LocationDemographicsSection({
             showDemographics ? 'lg:col-span-3' : 'lg:col-span-5'
           }`}
         >
-          <div className="relative isolate h-[560px] min-w-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100 shadow-sm sm:h-[620px]">
-            <MapContainer
-              center={mapCenterToUse}
-              bounds={mapBoundsToUse}
-              boundsOptions={{ padding: [40, 40] }}
-              zoom={mapZoom}
-              minZoom={mapMinZoom}
-              maxZoom={mapMaxZoom}
-              scrollWheelZoom={true}
-              dragging={true}
-              zoomControl={true}
-              className="h-full min-w-0 w-full"
-              aria-label={
-                showDemographics
-                  ? 'Interactive map highlighting Santa Barbara, Pangasinan'
-                  : 'Philippines weather overlay map with Santa Barbara highlighted'
-              }
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {!showDemographics && weatherOverlayUrl && (
+          <div
+            className={`relative isolate ${mapContainerHeightClass} min-w-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100 shadow-sm`}
+          >
+            {showDemographics ? (
+              <MapContainer
+                center={mapCenterToUse}
+                bounds={mapBoundsToUse}
+                boundsOptions={{ padding: [40, 40] }}
+                zoom={mapZoom}
+                minZoom={mapMinZoom}
+                maxZoom={mapMaxZoom}
+                scrollWheelZoom={false}
+                dragging={true}
+                zoomControl={true}
+                className="h-full min-w-0 w-full"
+                aria-label="Interactive map highlighting Santa Barbara, Pangasinan"
+              >
                 <TileLayer
-                  url={weatherOverlayUrl}
-                  opacity={0.65}
-                  attribution="&copy; OpenWeatherMap"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-              )}
-              {!showDemographics && !weatherOverlayUrl && rainViewerUrl && (
-                <TileLayer
-                  url={rainViewerUrl}
-                  opacity={0.9}
-                  attribution="&copy; RainViewer"
-                />
-              )}
-              {showDemographics &&
-                santaBarbaraBarangayLocations.map(barangay => (
+                {santaBarbaraBarangayLocations.map(barangay => (
                   <CircleMarker
                     key={barangay.name}
                     center={[barangay.position[0], barangay.position[1]]}
@@ -362,56 +299,59 @@ export default function LocationDemographicsSection({
                     </Tooltip>
                   </CircleMarker>
                 ))}
-              <GeoJSON
-                data={santaBarbaraBoundary}
-                style={() => ({
-                  color: '#0032a0',
-                  fillColor: '#0032a0',
-                  fillOpacity: showDemographics ? 0.09 : 0.03,
-                  opacity: 0.95,
-                  weight: 2.5,
-                })}
+                <GeoJSON
+                  data={santaBarbaraBoundary}
+                  style={() => ({
+                    color: '#0032a0',
+                    fillColor: '#0032a0',
+                    fillOpacity: 0.09,
+                    opacity: 0.95,
+                    weight: 2.5,
+                  })}
+                />
+                <CircleMarker
+                  center={mapCenter}
+                  radius={6}
+                  pathOptions={{
+                    color: '#0032a0',
+                    fillColor: '#f2c91d',
+                    fillOpacity: 1,
+                    weight: 2,
+                  }}
+                >
+                  <Popup>
+                    <strong>Santa Barbara, Pangasinan</strong>
+                    <br />
+                    {localGovernment.coordinates}
+                  </Popup>
+                </CircleMarker>
+                <ZoomControl position="bottomright" />
+              </MapContainer>
+            ) : (
+              <iframe
+                title="PAGASA weather map"
+                src={panahonMapUrl}
+                className="h-full min-w-0 w-full border-0"
+                loading="lazy"
               />
-              <CircleMarker
-                center={mapCenter}
-                radius={6}
-                pathOptions={{
-                  color: '#0032a0',
-                  fillColor: '#f2c91d',
-                  fillOpacity: 1,
-                  weight: 2,
-                }}
-              >
-                <Popup>
-                  <strong>Santa Barbara, Pangasinan</strong>
-                  <br />
-                  {localGovernment.coordinates}
-                </Popup>
-              </CircleMarker>
-              <ZoomControl position="bottomright" />
-            </MapContainer>
+            )}
             <div className="pointer-events-none absolute left-3 top-3 z-[500] flex items-center gap-2 rounded bg-white/95 px-3 py-2 text-xs font-semibold text-gray-800 shadow-sm">
               <span className="h-3 w-3 border-2 border-primary-500 bg-primary-100" />
               {showDemographics
                 ? 'Santa Barbara municipal boundary'
-                : 'Philippines weather overlay with Santa Barbara highlighted'}
+                : 'Official panahon.gov.ph weather map'}
             </div>
             {!showDemographics && (
-              <div className="absolute left-3 bottom-3 z-[500] flex flex-wrap gap-2 rounded-xl bg-white/95 p-2 shadow-sm">
-                {Object.entries(weatherOverlayOptions).map(([key, overlay]) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => setOverlayType(key as WeatherOverlayType)}
-                    className={`rounded-full border px-2 py-1 text-xs font-semibold transition ${
-                      overlayType === key
-                        ? 'border-primary-500 bg-primary-500 text-white'
-                        : 'border-gray-200 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-700'
-                    }`}
-                  >
-                    {overlay.label}
-                  </button>
-                ))}
+              <div className="absolute left-3 bottom-3 z-[500] rounded-xl bg-white/95 px-3 py-2 text-xs font-semibold text-gray-800 shadow-sm">
+                Source:{' '}
+                <a
+                  href="https://www.panahon.gov.ph/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary-700 underline"
+                >
+                  panahon.gov.ph
+                </a>
               </div>
             )}
             <div className="absolute right-0 top-16 z-[500] w-52 border-l-4 border-[#f2c91d] bg-primary-900/95 p-4 text-white shadow-xl backdrop-blur-sm">
