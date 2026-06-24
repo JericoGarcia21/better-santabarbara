@@ -84,9 +84,8 @@ const Navbar: React.FC = () => {
       {/* ── 2. Combined branding + nav bar ── */}
       <div className="border-b-2 border-[#f2c91d] bg-primary-700">
         <div className="flex h-20 w-full items-center justify-between gap-4 px-6">
-          <LiveCivicData />
           {/* Logo */}
-          <Link to="/#top" onClick={closeMenu} className="shrink-0">
+          <Link to="/" onClick={closeMenu} className="shrink-0">
             <SiteBrand />
           </Link>
 
@@ -131,8 +130,8 @@ const Navbar: React.FC = () => {
 
           {/* Right side: branding links + language */}
           <div className="hidden shrink-0 items-center gap-3 lg:flex">
-            {/* Divider */}
-            <div className="h-4 w-px bg-white/20" />
+            <LiveCivicData />
+            <div className="h-8 w-px bg-white/20" />
             <a
               href="https://bettergov.ph/join-us"
               className="rounded-full bg-[#f2c91d] px-3 py-1 text-xs font-bold text-primary-900 transition-opacity hover:opacity-90"

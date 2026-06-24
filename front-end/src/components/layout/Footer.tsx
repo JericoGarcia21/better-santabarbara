@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 pt-12 pb-8">
         <div className="mb-10 flex items-start gap-3 rounded-md border border-gray-700 bg-gray-800/70 p-4 sm:p-5">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#f2c91d]" />
-          <div className="max-w-5xl text-xs leading-5 text-gray-300 sm:text-sm sm:leading-6">
+          <div className="max-w-5xl text-sm leading-6 text-gray-200 sm:text-base sm:leading-7">
             <p>
               <strong className="text-white">
                 Independent portal disclaimer:
@@ -40,9 +40,7 @@ const Footer: React.FC = () => {
               official LGU data portal. Please verify critical information with
               the municipal government.
             </p>
-            <p className="mt-2 text-gray-400">
-              Once contact is established with the Santa Barbara LGU, its
-              offices will be invited to review the portal and help verify,
+            <p className="mt-2 text-gray-300">
               correct, and update public information. Until then, this portal
               does not claim LGU approval, endorsement, or partnership.
             </p>

@@ -54,20 +54,25 @@ export default function Hero() {
         <div
           role="note"
           aria-label="Data disclaimer"
-          className={`absolute inset-x-4 bottom-5 z-10 mx-auto flex max-w-4xl items-start gap-3 rounded-lg border border-[#f2c91d]/50 bg-primary-950/95 px-4 py-3 text-left shadow-xl backdrop-blur-sm transition-all duration-700 sm:items-center sm:px-5 ${
+          className={`absolute inset-x-4 bottom-5 z-10 mx-auto flex max-w-4xl items-start gap-3 rounded-lg border border-[#f2c91d]/50 bg-primary-950/95 px-4 py-4 text-left shadow-xl backdrop-blur-sm transition-all duration-700 sm:items-center sm:px-5 ${
             showDisclaimer
               ? 'translate-y-0 opacity-100'
               : 'pointer-events-none translate-y-2 opacity-0'
           }`}
         >
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#f2c91d] sm:mt-0" />
-          <p className="text-xs leading-5 text-white/90 sm:text-sm sm:leading-6">
-            <strong className="text-white">Disclaimer:</strong> Information on
-            this portal is compiled from publicly available open-source data and
-            may not reflect the latest records of the Municipality of Santa
-            Barbara. This independent community portal was created by a private
-            citizen of Santa Barbara and is not an official LGU data portal.
-            Please verify critical information with the municipal government.
+          <p className="whitespace-pre-line text-sm leading-6 text-white/95 sm:text-base sm:leading-7">
+            <strong className="text-white">Disclaimer:</strong> Independent
+            portal disclaimer: Information on this portal is compiled from
+            publicly available open-source data and may not reflect the latest
+            records of the Municipality of Santa Barbara. This independent
+            community portal was created by a private citizen of Santa Barbara
+            and is not an official LGU data portal. Please verify critical
+            information with the municipal government. Once contact is
+            established with the Santa Barbara LGU, its offices will be invited
+            to review the portal and help verify, correct, and update public
+            information. Until then, this portal does not claim LGU approval,
+            endorsement, or partnership.
           </p>
         </div>
       </section>

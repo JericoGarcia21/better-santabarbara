@@ -41,6 +41,34 @@ const santaBarbaraBounds: [[number, number], [number, number]] = [
   [15.9485, 120.3773],
   [16.0291, 120.4924],
 ];
+const santaBarbaraCenter: [number, number] = [
+  (santaBarbaraBounds[0][0] + santaBarbaraBounds[1][0]) / 2,
+  (santaBarbaraBounds[0][1] + santaBarbaraBounds[1][1]) / 2,
+];
+
+const philippinesCenter: [number, number] = [12.5, 122.0];
+
+const weatherOverlayOptions = {
+  wind: { label: 'Wind', type: 'openWeather', tile: 'wind_new' },
+  temperature: { label: 'Temperature', type: 'openWeather', tile: 'temp_new' },
+  precipitation: {
+    label: 'Precipitation',
+    type: 'openWeather',
+    tile: 'precipitation_new',
+  },
+  clouds: { label: 'Clouds', type: 'openWeather', tile: 'clouds_new' },
+  radar: { label: 'Radar', type: 'rainViewer' },
+} as const;
+
+type WeatherOverlayType = keyof typeof weatherOverlayOptions;
+
+const buildOverlayUrl = (tile: string) =>
+  import.meta.env.VITE_OPENWEATHERMAP_API_KEY
+    ? `https://tile.openweathermap.org/map/${tile}/{z}/{x}/{y}.png?appid=${import.meta.env.VITE_OPENWEATHERMAP_API_KEY}`
+    : '';
+
+const buildRainViewerUrl = (timestamp: number) =>
+  `https://tilecache.rainviewer.com/v2/radar/${timestamp}/{z}/{x}/{y}/2/1_0.png`;
 
 interface WeatherData {
   current: {
@@ -169,25 +197,86 @@ export default function LocationDemographicsSection({
 }) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherUnavailable, setWeatherUnavailable] = useState(false);
+  const [weatherLastUpdated, setWeatherLastUpdated] = useState<number | null>(
+    null
+  );
+  const [overlayType, setOverlayType] = useState<WeatherOverlayType>('wind');
+  const [rainViewerTimestamp, setRainViewerTimestamp] = useState<number | null>(
+    null
+  );
+
+  const formatWeatherUpdate = (timestamp: number) =>
+    new Intl.DateTimeFormat('en-PH', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Manila',
+    }).format(new Date(timestamp));
+
+  const mapCenterToUse = showDemographics
+    ? santaBarbaraCenter
+    : philippinesCenter;
+  const mapBoundsToUse = showDemographics ? santaBarbaraBounds : undefined;
+  const mapMinZoom = showDemographics ? 12 : 3;
+  const mapMaxZoom = showDemographics ? 18 : 10;
+  const mapZoom = showDemographics ? 13 : 5;
+  const overlayData = weatherOverlayOptions[overlayType];
+
+  const weatherOverlayUrl =
+    overlayData.type === 'openWeather' && overlayData.tile
+      ? buildOverlayUrl(overlayData.tile)
+      : '';
+  const rainViewerUrl =
+    overlayData.type === 'rainViewer' && rainViewerTimestamp
+      ? buildRainViewerUrl(rainViewerTimestamp)
+      : '';
 
   useEffect(() => {
     const controller = new AbortController();
     const weatherUrl =
       'https://api.open-meteo.com/v1/forecast?latitude=15.9999&longitude=120.4051&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&timezone=Asia%2FManila&forecast_days=5';
 
-    fetch(weatherUrl, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) throw new Error('Weather request failed');
-        return response.json() as Promise<WeatherData>;
-      })
-      .then(setWeather)
-      .catch(error => {
+    const loadWeather = async () => {
+      try {
+        const [weatherResponse, rainViewerResponse] = await Promise.all([
+          fetch(weatherUrl, { signal: controller.signal }),
+          fetch('https://api.rainviewer.com/public/maps.json', {
+            signal: controller.signal,
+          }),
+        ]);
+
+        if (!weatherResponse.ok) throw new Error('Weather request failed');
+        if (!rainViewerResponse.ok)
+          throw new Error('RainViewer metadata request failed');
+
+        const weatherData = (await weatherResponse.json()) as WeatherData;
+        const rainViewerData = (await rainViewerResponse.json()) as {
+          radar: { nowcast: Array<{ time: number }> };
+        };
+
+        setWeather(weatherData);
+        setWeatherLastUpdated(Date.now());
+        const latestFrame =
+          rainViewerData.radar.nowcast?.[
+            rainViewerData.radar.nowcast.length - 1
+          ];
+        if (latestFrame) {
+          setRainViewerTimestamp(latestFrame.time);
+        }
+      } catch (error) {
         if (error instanceof Error && error.name !== 'AbortError') {
           setWeatherUnavailable(true);
         }
-      });
+      }
+    };
 
-    return () => controller.abort();
+    loadWeather();
+    const refreshInterval = window.setInterval(loadWeather, 5 * 60 * 1000);
+
+    return () => {
+      controller.abort();
+      window.clearInterval(refreshInterval);
+    };
   }, []);
 
   return (
@@ -215,51 +304,70 @@ export default function LocationDemographicsSection({
         >
           <div className="relative isolate h-[560px] min-w-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100 shadow-sm sm:h-[620px]">
             <MapContainer
-              center={mapCenter}
-              bounds={santaBarbaraBounds}
-              boundsOptions={{ padding: [8, 8] }}
-              maxBounds={santaBarbaraBounds}
-              maxBoundsViscosity={1}
-              minZoom={12}
-              maxZoom={18}
-              scrollWheelZoom={false}
-              zoomControl={false}
+              center={mapCenterToUse}
+              bounds={mapBoundsToUse}
+              boundsOptions={{ padding: [40, 40] }}
+              zoom={mapZoom}
+              minZoom={mapMinZoom}
+              maxZoom={mapMaxZoom}
+              scrollWheelZoom={true}
+              dragging={true}
+              zoomControl={true}
               className="h-full min-w-0 w-full"
-              aria-label="Interactive map highlighting Santa Barbara, Pangasinan"
+              aria-label={
+                showDemographics
+                  ? 'Interactive map highlighting Santa Barbara, Pangasinan'
+                  : 'Philippines weather overlay map with Santa Barbara highlighted'
+              }
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {santaBarbaraBarangayLocations.map(barangay => (
-                <CircleMarker
-                  key={barangay.name}
-                  center={[barangay.position[0], barangay.position[1]]}
-                  radius={3}
-                  interactive={false}
-                  pathOptions={{
-                    color: '#ffffff',
-                    fillColor: '#0032a0',
-                    fillOpacity: 1,
-                    weight: 1,
-                  }}
-                >
-                  <Tooltip
-                    permanent
-                    direction="top"
-                    offset={[0, -3]}
-                    className="barangay-map-label"
+              {!showDemographics && weatherOverlayUrl && (
+                <TileLayer
+                  url={weatherOverlayUrl}
+                  opacity={0.65}
+                  attribution="&copy; OpenWeatherMap"
+                />
+              )}
+              {!showDemographics && !weatherOverlayUrl && rainViewerUrl && (
+                <TileLayer
+                  url={rainViewerUrl}
+                  opacity={0.9}
+                  attribution="&copy; RainViewer"
+                />
+              )}
+              {showDemographics &&
+                santaBarbaraBarangayLocations.map(barangay => (
+                  <CircleMarker
+                    key={barangay.name}
+                    center={[barangay.position[0], barangay.position[1]]}
+                    radius={3}
+                    interactive={false}
+                    pathOptions={{
+                      color: '#ffffff',
+                      fillColor: '#0032a0',
+                      fillOpacity: 1,
+                      weight: 1,
+                    }}
                   >
-                    {barangay.name}
-                  </Tooltip>
-                </CircleMarker>
-              ))}
+                    <Tooltip
+                      permanent
+                      direction="top"
+                      offset={[0, -3]}
+                      className="barangay-map-label"
+                    >
+                      {barangay.name}
+                    </Tooltip>
+                  </CircleMarker>
+                ))}
               <GeoJSON
                 data={santaBarbaraBoundary}
                 style={() => ({
                   color: '#0032a0',
                   fillColor: '#0032a0',
-                  fillOpacity: 0.09,
+                  fillOpacity: showDemographics ? 0.09 : 0.03,
                   opacity: 0.95,
                   weight: 2.5,
                 })}
@@ -284,8 +392,28 @@ export default function LocationDemographicsSection({
             </MapContainer>
             <div className="pointer-events-none absolute left-3 top-3 z-[500] flex items-center gap-2 rounded bg-white/95 px-3 py-2 text-xs font-semibold text-gray-800 shadow-sm">
               <span className="h-3 w-3 border-2 border-primary-500 bg-primary-100" />
-              Santa Barbara municipal boundary
+              {showDemographics
+                ? 'Santa Barbara municipal boundary'
+                : 'Philippines weather overlay with Santa Barbara highlighted'}
             </div>
+            {!showDemographics && (
+              <div className="absolute left-3 bottom-3 z-[500] flex flex-wrap gap-2 rounded-xl bg-white/95 p-2 shadow-sm">
+                {Object.entries(weatherOverlayOptions).map(([key, overlay]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setOverlayType(key as WeatherOverlayType)}
+                    className={`rounded-full border px-2 py-1 text-xs font-semibold transition ${
+                      overlayType === key
+                        ? 'border-primary-500 bg-primary-500 text-white'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-700'
+                    }`}
+                  >
+                    {overlay.label}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="absolute right-0 top-16 z-[500] w-52 border-l-4 border-[#f2c91d] bg-primary-900/95 p-4 text-white shadow-xl backdrop-blur-sm">
               {weather ? (
                 <>
@@ -335,21 +463,27 @@ export default function LocationDemographicsSection({
                 </div>
                 <div className="text-xs text-gray-500">
                   Forecast for Santa Barbara · Updated live by Open-Meteo
+                  {weatherLastUpdated
+                    ? ` · Updated ${formatWeatherUpdate(weatherLastUpdated)}`
+                    : ''}
                 </div>
                 <div className="mt-1 text-xs font-medium text-primary-700 sm:hidden">
                   Swipe sideways to view all five days
                 </div>
               </div>
               <div className="overflow-x-auto" aria-label="Five-day forecast">
-                <div className="grid min-w-[600px] grid-cols-5 divide-x divide-gray-200">
+                <div className="grid auto-cols-[220px] grid-flow-col gap-3 px-2 py-2 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-5">
                   {weather.daily.time.map((date, index) => (
-                    <div key={date} className="px-4 py-5 text-center">
-                      <div className="text-base font-bold text-gray-900">
+                    <div
+                      key={date}
+                      className="min-w-[220px] rounded-3xl border border-gray-200 bg-gray-50 px-4 py-5 text-center shadow-sm sm:min-w-0"
+                    >
+                      <div className="text-sm font-semibold uppercase tracking-wide text-gray-700">
                         {new Intl.DateTimeFormat('en-PH', {
                           weekday: 'short',
                         }).format(new Date(`${date}T12:00:00`))}
                       </div>
-                      <div className="mt-0.5 text-xs font-medium text-gray-500">
+                      <div className="mt-1 text-xs font-medium text-gray-500">
                         {new Intl.DateTimeFormat('en-PH', {
                           month: 'short',
                           day: 'numeric',
@@ -357,9 +491,9 @@ export default function LocationDemographicsSection({
                       </div>
                       <WeatherIcon
                         code={weather.daily.weather_code[index]}
-                        className="mx-auto my-3 h-8 w-8 text-primary-600"
+                        className="mx-auto my-3 h-9 w-9 text-primary-600"
                       />
-                      <div className="text-xs font-medium text-gray-600">
+                      <div className="text-sm font-semibold text-gray-900">
                         {weatherDescription(weather.daily.weather_code[index])}
                       </div>
                       <div className="mt-3 flex justify-center gap-3 text-sm">
@@ -372,9 +506,8 @@ export default function LocationDemographicsSection({
                           {Math.round(weather.daily.temperature_2m_min[index])}°
                         </span>
                       </div>
-                      <div className="mt-2 flex items-center justify-center gap-1.5 text-sm font-semibold text-blue-700">
+                      <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-2 text-sm font-semibold text-primary-700">
                         <Droplets className="h-4 w-4" />
-                        Rain{' '}
                         {weather.daily.precipitation_probability_max[index]}%
                       </div>
                     </div>
@@ -384,28 +517,28 @@ export default function LocationDemographicsSection({
             </div>
           )}
           {showForecast && weather && (
-            <div className="grid border-b border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-gray-200">
-              <div className="border-b border-gray-200 px-4 py-5 sm:border-b-0 sm:px-5">
+            <div className="grid gap-4 border-b border-gray-200 bg-gray-50 px-4 py-4 sm:grid-cols-3 sm:divide-x sm:divide-gray-200 sm:px-0">
+              <div className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2 text-sm font-bold text-blue-900">
                   <CloudRain className="h-5 w-5" />
                   Rainfall watch
                 </div>
-                <div className="mt-3 font-semibold text-gray-900">
+                <div className="mt-3 text-lg font-semibold text-gray-900">
                   {getRainRisk(weather).label}
                 </div>
-                <div className="mt-1 text-xs leading-5 text-gray-600">
+                <div className="mt-2 text-sm leading-6 text-gray-600">
                   {getRainRisk(weather).detail}
                 </div>
               </div>
-              <div className="border-b border-gray-200 px-4 py-5 sm:border-b-0 sm:px-5">
+              <div className="rounded-3xl border border-orange-100 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2 text-sm font-bold text-orange-900">
                   <Sun className="h-5 w-5" />
                   Heat watch
                 </div>
-                <div className="mt-3 font-semibold text-gray-900">
+                <div className="mt-3 text-lg font-semibold text-gray-900">
                   {getHeatRisk(weather.current.apparent_temperature).label}
                 </div>
-                <div className="mt-1 text-xs leading-5 text-gray-600">
+                <div className="mt-2 text-sm leading-6 text-gray-600">
                   Feels like {Math.round(weather.current.apparent_temperature)}
                   °C. {getHeatRisk(weather.current.apparent_temperature).detail}
                 </div>
@@ -414,16 +547,16 @@ export default function LocationDemographicsSection({
                 href="https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin"
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-5 transition-colors hover:bg-white sm:px-5"
+                className="rounded-3xl border border-red-100 bg-white p-5 shadow-sm transition hover:border-red-200 hover:bg-red-50"
               >
                 <div className="flex items-center gap-2 text-sm font-bold text-red-900">
                   <ShieldAlert className="h-5 w-5" />
                   Typhoon warnings
                 </div>
-                <div className="mt-3 font-semibold text-gray-900">
+                <div className="mt-3 text-lg font-semibold text-gray-900">
                   Check official bulletins
                 </div>
-                <div className="mt-1 text-xs leading-5 text-gray-600">
+                <div className="mt-2 text-sm leading-6 text-gray-600">
                   Open the latest PAGASA tropical cyclone bulletin. Weather
                   forecasts on this page are not official storm warnings.
                 </div>

@@ -109,6 +109,19 @@
       opacity: 1;
     }
   }
+
+  @keyframes fadeInLong {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in-long {
+    animation: fadeInLong 10s ease-in-out forwards;
+  }
 }
 
 @theme inline {

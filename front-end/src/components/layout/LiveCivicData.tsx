@@ -145,27 +145,27 @@ export default function LiveCivicData() {
 
   return (
     <div
-      className="mr-5 hidden w-[25rem] shrink-0 grid-cols-[13.5rem_1px_9.5rem] items-center gap-3 border-r border-white/25 pr-5 xl:grid"
-      title="Philippine time from WorldTimeAPI. Indicative exchange reference from Frankfurter using European Central Bank data."
+      className="hidden shrink-0 lg:flex lg:items-center lg:gap-4"
+      title="Philippine time from WorldTimeAPI. Indicative exchange rates from Frankfurter using European Central Bank data."
     >
-      <div className="flex min-w-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold text-white">
-        <Clock3 className="h-3.5 w-3.5 shrink-0 text-[#f2c91d]" />
-        <span className="block w-[12rem] tabular-nums">
+      <div className="flex min-w-0 items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-white">
+        <Clock3 className="h-4 w-4 shrink-0 text-[#f2c91d]" />
+        <span className="block min-w-0 truncate tabular-nums">
           {philippineDate && philippineTime
             ? `${philippineDate} · ${philippineTime}`
             : 'Time unavailable'}
         </span>
-        {!philippineTime && <RefreshCw className="h-3 w-3 opacity-60" />}
+        {!philippineTime && <RefreshCw className="h-3.5 w-3.5 opacity-60" />}
       </div>
       <div className="h-8 w-px shrink-0 bg-white/20" />
       <div className="min-w-0">
-        <div className="grid grid-cols-[auto_3.5rem_auto_4.75rem] items-center gap-1 whitespace-nowrap text-[11px] text-white/80">
+        <div className="flex items-center gap-1 whitespace-nowrap text-sm text-white/80">
           <span>1</span>
           <select
             value={currency}
             onChange={event => setCurrency(event.target.value)}
             aria-label="Foreign currency"
-            className="w-14 border-0 bg-transparent p-0 font-bold text-[#f2c91d] focus:outline-none"
+            className="border-0 bg-transparent p-0 text-right font-bold text-[#f2c91d] focus:outline-none"
           >
             {currencies.map(code => (
               <option key={code} value={code} className="text-gray-900">
@@ -174,12 +174,9 @@ export default function LiveCivicData() {
             ))}
           </select>
           <span>=</span>
-          <span className="block w-[4.75rem] text-right font-semibold tabular-nums text-white">
+          <span className="block min-w-[4rem] text-left font-semibold tabular-nums text-white">
             {pesoEquivalent ? `₱${pesoEquivalent.toFixed(2)}` : '—'}
           </span>
-        </div>
-        <div className="mt-1 whitespace-nowrap text-left text-[9px] uppercase tracking-wide text-white/50">
-          Indicative reference rate
         </div>
       </div>
     </div>
