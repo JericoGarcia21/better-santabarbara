@@ -1,10 +1,10 @@
+import { useMemo, useState } from 'react';
 import {
   CalendarDays,
   Database,
   Landmark,
   MapPin,
   Quote,
-  Sprout,
   Users,
 } from 'lucide-react';
 import {
@@ -15,7 +15,6 @@ import { Heading } from '../ui/Heading';
 import Section from '../ui/Section';
 import { Text } from '../ui/Text';
 import ScrollReveal from '../ui/ScrollReveal';
-import OfficialsDirectory from './OfficialsDirectory';
 
 const formatPopulation = (val?: string) => {
   if (!val) return '—';
@@ -86,6 +85,26 @@ const dataSources = [
 ];
 
 export default function LocalGovernmentProfile() {
+  const BARANGAYS_PER_PAGE = 10;
+  const [barangayPage, setBarangayPage] = useState(1);
+  const totalBarangayPages = useMemo(
+    () => Math.ceil(localGovernmentBarangays.length / BARANGAYS_PER_PAGE),
+    [localGovernmentBarangays.length]
+  );
+  const currentBarangays = useMemo(
+    () =>
+      localGovernmentBarangays.slice(
+        (barangayPage - 1) * BARANGAYS_PER_PAGE,
+        barangayPage * BARANGAYS_PER_PAGE
+      ),
+    [barangayPage, localGovernmentBarangays]
+  );
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalBarangayPages) return;
+    setBarangayPage(page);
+  };
+
   return (
     <Section id="municipal-profile" className="overflow-hidden bg-white">
       <ScrollReveal>
@@ -160,7 +179,7 @@ export default function LocalGovernmentProfile() {
         </div>
       </ScrollReveal>
 
-      <ScrollReveal className="mt-20 grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
+      <ScrollReveal className="mt-8 grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
         <div>
           <div className="sticky top-32">
             <div className="text-sm font-bold uppercase tracking-[0.22em] text-primary-700">
@@ -183,184 +202,246 @@ export default function LocalGovernmentProfile() {
               className="relative pb-12 pl-8 last:pb-0 sm:pl-12"
             >
               <span className="absolute -left-[9px] top-1 h-[17px] w-[17px] rounded-full border-4 border-white bg-primary-700 ring-1 ring-primary-300" />
-              <div className="mb-2 flex items-baseline gap-4">
-                <span className="font-serif text-2xl font-bold text-primary-800">
-                  {event.date}
-                </span>
-                <span className="text-xs font-bold text-gray-400">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+              <div className="mt-4">
+                <div className="mb-2 flex items-baseline gap-4">
+                  <span className="font-serif text-2xl font-bold text-primary-800">
+                    {event.date}
+                  </span>
+                  <span className="text-xs font-bold text-gray-400">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-gray-950 sm:text-2xl">
+                  {event.title}
+                </h4>
+                <p className="mt-3 max-w-2xl leading-7 text-gray-700">
+                  {event.description}
+                </p>
               </div>
-              <h4 className="text-xl font-bold text-gray-950 sm:text-2xl">
-                {event.title}
-              </h4>
-              <p className="mt-3 max-w-2xl leading-7 text-gray-700">
-                {event.description}
-              </p>
             </article>
           ))}
         </div>
       </ScrollReveal>
 
-      <ScrollReveal className="mt-10 grid gap-4 md:grid-cols-2">
-        <div className="rounded-md border border-gray-200 bg-white p-5">
-          <MapPin className="mb-3 h-5 w-5 text-primary-600" />
-          <Heading level={3}>Place and connections</Heading>
-          <Text className="mb-0 text-gray-800">
-            {localGovernment.geographySummary}
-          </Text>
-        </div>
-        <div className="rounded-md border border-gray-200 bg-white p-5">
-          <Sprout className="mb-3 h-5 w-5 text-primary-600" />
-          <Heading level={3}>Local economy</Heading>
-          <Text className="mb-0 text-gray-800">
-            {localGovernment.economySummary}
-          </Text>
-        </div>
-      </ScrollReveal>
+      {(() => {
+        const topBarangays = [...localGovernmentBarangays]
+          .filter(b => b.population2020)
+          .sort(
+            (a, b) =>
+              Number(b.population2020.replace(/,/g, '')) -
+              Number(a.population2020.replace(/,/g, ''))
+          )
+          .slice(0, 3);
 
-      <OfficialsDirectory />
-
-      <ScrollReveal className="mt-10">
-        <div
-          id="barangays"
-          className="scroll-mt-36 flex flex-col justify-between gap-2 sm:flex-row sm:items-end"
-        >
-          <Heading level={3} className="mb-0">
-            Barangays
-          </Heading>
-          <div className="text-base text-gray-700">
-            Municipality PSGC:{' '}
-            <strong>{localGovernment.psgc.psgc10DigitCode}</strong>
-          </div>
-        </div>
-        <Text className="text-gray-700">
-          The municipality has {localGovernment.barangays} barangays. The 2024
-          census population is {localGovernment.population2024}; barangay
-          hierarchy and codes are from the PSGC snapshot dated{' '}
-          {localGovernment.psgcSnapshotDate}.
-        </Text>
-        {/* Top 3 most populated barangays (2020) */}
-        {(() => {
-          const topBarangays = [...localGovernmentBarangays]
-            .filter(b => b.population2020)
-            .sort(
-              (a, b) =>
-                Number(b.population2020.replace(/,/g, '')) -
-                Number(a.population2020.replace(/,/g, ''))
-            )
-            .slice(0, 3);
-
-          const summary = topBarangays
-            .map(b => `${b.name} (${formatPopulation(b.population2020)})`)
-            .join(', ');
-
-          return (
-            <div className="mt-4">
-              <div className="mb-2 flex items-baseline justify-between">
-                <div>
-                  <div className="text-sm font-semibold text-gray-700">
-                    Top 3 most populated barangays
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    Santa Barbara (2020)
-                  </div>
+        return (
+          <ScrollReveal className="mt-8 grid gap-10 lg:grid-cols-[1fr_320px] lg:gap-8">
+            <div>
+              <div className="space-y-4">
+                <div className="space-y-3 sm:hidden">
+                  {currentBarangays.map(barangay => (
+                    <div
+                      key={barangay.name}
+                      className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="text-sm font-semibold text-gray-900">
+                            {barangay.name}
+                          </div>
+                          {'oldName' in barangay && barangay.oldName && (
+                            <div className="mt-1 text-xs text-gray-500">
+                              Formerly {barangay.oldName}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-right text-sm font-semibold text-gray-900">
+                          {formatPopulation(
+                            'population2020' in barangay &&
+                              barangay.population2020
+                              ? barangay.population2020
+                              : undefined
+                          )}
+                        </div>
+                      </div>
+                      <div className="mt-3 grid gap-2 text-sm text-gray-600 sm:grid-cols-2">
+                        <div>
+                          <div className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                            PSGC code
+                          </div>
+                          <div className="mt-1 font-mono text-sm text-gray-700">
+                            {barangay.psgc10DigitCode}
+                          </div>
+                          <div className="mt-1 text-xs text-gray-500">
+                            {barangay.code}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                            Share (2020)
+                          </div>
+                          <div className="mt-1 text-sm text-gray-700">
+                            {'share2020' in barangay && barangay.share2020
+                              ? barangay.share2020
+                              : '—'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="text-sm text-gray-600">{summary}</div>
+
+                <div className="hidden sm:block overflow-x-auto rounded border border-gray-200 bg-white">
+                  <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+                    <thead className="bg-gray-100 text-xs uppercase text-gray-600">
+                      <tr className="sticky top-0 z-10">
+                        <th className="px-4 py-3 font-semibold text-left">
+                          Barangay
+                        </th>
+                        <th className="px-4 py-3 font-semibold text-left">
+                          PSGC code
+                        </th>
+                        <th className="px-4 py-3 font-semibold text-right">
+                          Population (2020)
+                        </th>
+                        <th className="px-4 py-3 font-semibold text-right">
+                          Share (2020)
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {currentBarangays.map(barangay => (
+                        <tr key={barangay.name} className="hover:bg-gray-50">
+                          <td className="px-4 py-3 align-top">
+                            <div className="font-medium text-gray-900">
+                              {barangay.name}
+                            </div>
+                            {'oldName' in barangay && barangay.oldName && (
+                              <div className="mt-0.5 text-xs font-normal text-gray-500">
+                                Formerly {barangay.oldName}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 align-top">
+                            <div className="font-mono text-xs text-gray-700">
+                              {barangay.psgc10DigitCode}
+                            </div>
+                            <div className="mt-0.5 text-xs text-gray-500">
+                              {barangay.code}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-right font-semibold text-gray-900 align-top">
+                            {formatPopulation(
+                              'population2020' in barangay &&
+                                barangay.population2020
+                                ? barangay.population2020
+                                : undefined
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-right text-sm text-gray-600 align-top">
+                            {'share2020' in barangay && barangay.share2020
+                              ? barangay.share2020
+                              : '—'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {topBarangays.map((barangay, idx) => (
-                  <div
-                    key={barangay.name}
-                    className="rounded border border-gray-200 bg-white p-3"
+              <div className="mt-4 flex items-center justify-end gap-3">
+                <div className="text-sm text-gray-600 hidden sm:block">
+                  Showing page {barangayPage} of {totalBarangayPages}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => goToPage(barangayPage - 1)}
+                    disabled={barangayPage === 1}
+                    className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition hover:border-primary-500 hover:text-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <div className="text-xs font-medium text-gray-500">
-                      #{idx + 1}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-gray-700">
-                      {barangay.name}
-                    </div>
-                    <div className="mt-1 text-lg font-bold text-gray-900">
-                      {formatPopulation(barangay.population2020)}
-                    </div>
-                    {'share2020' in barangay && barangay.share2020 && (
-                      <div className="mt-1 text-xs text-gray-500">
-                        {barangay.share2020}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                    Previous
+                  </button>
+                  {Array.from(
+                    { length: totalBarangayPages },
+                    (_, i) => i + 1
+                  ).map(n => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => goToPage(n)}
+                      className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${n === barangayPage ? 'border-primary-500 bg-primary-500 text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-700'}`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => goToPage(barangayPage + 1)}
+                    disabled={barangayPage === totalBarangayPages}
+                    className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition hover:border-primary-500 hover:text-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              <div
+                role="note"
+                className="mt-4 rounded-md border-l-4 border-yellow-400 bg-yellow-50 p-4 text-base text-gray-800 leading-relaxed"
+              >
+                <div className="font-semibold">Note:</div>
+                <div className="mt-1">
+                  Barangay population figures shown are from the{' '}
+                  <strong>2020 census</strong>. The municipal total shown above
+                  is the <strong>2024 census</strong> municipality total.
+                  Barangay-level 2024 counts are not currently available in this
+                  dataset.
+                </div>
               </div>
             </div>
-          );
-        })()}
-        <div className="mt-4 overflow-x-auto rounded border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
-            <thead className="bg-gray-100 text-xs uppercase text-gray-600">
-              <tr className="sticky top-0 z-10">
-                <th className="px-4 py-3 font-semibold text-left">Barangay</th>
-                <th className="px-4 py-3 font-semibold text-left">PSGC code</th>
-                <th className="px-4 py-3 font-semibold text-right">
-                  Population (2020)
-                </th>
-                <th className="px-4 py-3 font-semibold text-right">
-                  Share (2020)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {localGovernmentBarangays.map(barangay => (
-                <tr key={barangay.name} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 align-top">
-                    <div className="font-medium text-gray-900">
-                      {barangay.name}
-                    </div>
-                    {'oldName' in barangay && barangay.oldName && (
-                      <div className="mt-0.5 text-xs font-normal text-gray-500">
-                        Formerly {barangay.oldName}
+
+            <aside className="hidden lg:block">
+              <div className="sticky top-32 space-y-3">
+                <div className="text-sm font-semibold text-gray-700">
+                  Top 3 most populated barangays
+                </div>
+                <div className="text-xs text-gray-500">
+                  Santa Barbara (2020)
+                </div>
+
+                <div className="mt-3 space-y-3">
+                  {topBarangays.map((b, idx) => (
+                    <div
+                      key={b.name}
+                      className="flex items-center justify-between rounded border border-gray-100 bg-white p-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="rounded-full bg-primary-50 px-2 py-1 text-sm font-bold text-primary-700">
+                          #{idx + 1}
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-gray-800">
+                            {b.name}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {formatPopulation(b.population2020)}
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <div className="font-mono text-xs text-gray-700">
-                      {barangay.psgc10DigitCode}
+                      {'share2020' in b && b.share2020 && (
+                        <div className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-800">
+                          {b.share2020}
+                        </div>
+                      )}
                     </div>
-                    <div className="mt-0.5 text-xs text-gray-500">
-                      {barangay.code}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-right font-semibold text-gray-900 align-top">
-                    {formatPopulation(
-                      'population2020' in barangay && barangay.population2020
-                        ? barangay.population2020
-                        : undefined
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-right text-sm text-gray-600 align-top">
-                    {'share2020' in barangay && barangay.share2020
-                      ? barangay.share2020
-                      : '—'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div
-          role="note"
-          className="mt-4 rounded-md border-l-4 border-yellow-400 bg-yellow-50 p-4 text-base text-gray-800 leading-relaxed"
-        >
-          <div className="font-semibold">Note:</div>
-          <div className="mt-1">
-            Barangay population figures shown are from the{' '}
-            <strong>2020 census</strong>. The municipal total shown above is the{' '}
-            <strong>2024 census</strong>
-            municipality total. Barangay-level 2024 counts are not currently
-            available in this dataset.
-          </div>
-        </div>
-      </ScrollReveal>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </ScrollReveal>
+        );
+      })()}
 
       <ScrollReveal className="mt-10 border-t border-gray-200 pt-8">
         <div className="flex items-center gap-3">
