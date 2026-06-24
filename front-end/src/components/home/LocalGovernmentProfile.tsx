@@ -17,6 +17,13 @@ import { Text } from '../ui/Text';
 import ScrollReveal from '../ui/ScrollReveal';
 import OfficialsDirectory from './OfficialsDirectory';
 
+const formatPopulation = (val?: string) => {
+  if (!val) return '—';
+  const n = Number(String(val).replace(/,/g, ''));
+  if (Number.isNaN(n)) return val;
+  return n.toLocaleString();
+};
+
 const profileStats = [
   {
     label: 'Founded',
@@ -88,7 +95,7 @@ export default function LocalGovernmentProfile() {
           </div>
           <div className="relative grid lg:grid-cols-[1.25fr_0.75fr]">
             <div className="p-7 sm:p-10 lg:p-14">
-              <div className="mb-8 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-[#f2c91d]">
+              <div className="mb-8 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.22em] text-[#f2c91d]">
                 <span className="h-px w-10 bg-[#f2c91d]" />
                 Municipal portrait
               </div>
@@ -110,7 +117,7 @@ export default function LocalGovernmentProfile() {
             </div>
 
             <aside className="border-t border-white/10 bg-black/10 p-7 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
-              <div className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.18em] text-[#f2c91d]">
+              <div className="flex items-center gap-3 text-base font-bold uppercase tracking-[0.18em] text-[#f2c91d]">
                 <Landmark className="h-5 w-5" />
                 Living heritage
               </div>
@@ -140,11 +147,11 @@ export default function LocalGovernmentProfile() {
                   index > 0 ? 'border-t border-gray-100 sm:border-t-0' : ''
                 } ${index % 2 ? 'sm:border-l' : ''} lg:border-l lg:first:border-l-0`}
               >
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-500">
                   <Icon className="h-4 w-4 text-primary-600" />
                   {stat.label}
                 </div>
-                <div className="mt-3 text-lg font-bold text-gray-950">
+                <div className="mt-3 text-xl font-bold text-gray-950">
                   {stat.value}
                 </div>
               </div>
@@ -156,13 +163,13 @@ export default function LocalGovernmentProfile() {
       <ScrollReveal className="mt-20 grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
         <div>
           <div className="sticky top-32">
-            <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary-700">
+            <div className="text-sm font-bold uppercase tracking-[0.22em] text-primary-700">
               Tolong to Santa Barbara
             </div>
             <Heading level={3} className="mt-3 text-4xl">
               A brief history
             </Heading>
-            <Text className="max-w-sm text-gray-600">
+            <Text className="max-w-sm text-gray-700">
               A river settlement, an early pueblo, and a center of
               resistance—four moments that shaped the municipality known today.
             </Text>
@@ -199,14 +206,14 @@ export default function LocalGovernmentProfile() {
         <div className="rounded-md border border-gray-200 bg-white p-5">
           <MapPin className="mb-3 h-5 w-5 text-primary-600" />
           <Heading level={3}>Place and connections</Heading>
-          <Text className="mb-0 text-gray-700">
+          <Text className="mb-0 text-gray-800">
             {localGovernment.geographySummary}
           </Text>
         </div>
         <div className="rounded-md border border-gray-200 bg-white p-5">
           <Sprout className="mb-3 h-5 w-5 text-primary-600" />
           <Heading level={3}>Local economy</Heading>
-          <Text className="mb-0 text-gray-700">
+          <Text className="mb-0 text-gray-800">
             {localGovernment.economySummary}
           </Text>
         </div>
@@ -222,44 +229,136 @@ export default function LocalGovernmentProfile() {
           <Heading level={3} className="mb-0">
             Barangays
           </Heading>
-          <div className="text-sm text-gray-600">
+          <div className="text-base text-gray-700">
             Municipality PSGC:{' '}
             <strong>{localGovernment.psgc.psgc10DigitCode}</strong>
           </div>
         </div>
-        <Text className="text-gray-600">
+        <Text className="text-gray-700">
           The municipality has {localGovernment.barangays} barangays. The 2024
           census population is {localGovernment.population2024}; barangay
           hierarchy and codes are from the PSGC snapshot dated{' '}
           {localGovernment.psgcSnapshotDate}.
         </Text>
+        {/* Top 3 most populated barangays (2020) */}
+        {(() => {
+          const topBarangays = [...localGovernmentBarangays]
+            .filter(b => b.population2020)
+            .sort(
+              (a, b) =>
+                Number(b.population2020.replace(/,/g, '')) -
+                Number(a.population2020.replace(/,/g, ''))
+            )
+            .slice(0, 3);
+
+          const summary = topBarangays
+            .map(b => `${b.name} (${formatPopulation(b.population2020)})`)
+            .join(', ');
+
+          return (
+            <div className="mt-4">
+              <div className="mb-2 flex items-baseline justify-between">
+                <div>
+                  <div className="text-sm font-semibold text-gray-700">
+                    Top 3 most populated barangays
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Santa Barbara (2020)
+                  </div>
+                </div>
+                <div className="text-sm text-gray-600">{summary}</div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {topBarangays.map((barangay, idx) => (
+                  <div
+                    key={barangay.name}
+                    className="rounded border border-gray-200 bg-white p-3"
+                  >
+                    <div className="text-xs font-medium text-gray-500">
+                      #{idx + 1}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-gray-700">
+                      {barangay.name}
+                    </div>
+                    <div className="mt-1 text-lg font-bold text-gray-900">
+                      {formatPopulation(barangay.population2020)}
+                    </div>
+                    {'share2020' in barangay && barangay.share2020 && (
+                      <div className="mt-1 text-xs text-gray-500">
+                        {barangay.share2020}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
         <div className="mt-4 overflow-x-auto rounded border border-gray-200 bg-white">
           <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
             <thead className="bg-gray-100 text-xs uppercase text-gray-600">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Barangay</th>
-                <th className="px-4 py-3 font-semibold">PSGC code</th>
+              <tr className="sticky top-0 z-10">
+                <th className="px-4 py-3 font-semibold text-left">Barangay</th>
+                <th className="px-4 py-3 font-semibold text-left">PSGC code</th>
+                <th className="px-4 py-3 font-semibold text-right">
+                  Population (2020)
+                </th>
+                <th className="px-4 py-3 font-semibold text-right">
+                  Share (2020)
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {localGovernmentBarangays.map(barangay => (
-                <tr key={barangay.name}>
-                  <td className="px-4 py-3 font-medium text-gray-900">
-                    {barangay.name}
+                <tr key={barangay.name} className="hover:bg-gray-50">
+                  <td className="px-4 py-3 align-top">
+                    <div className="font-medium text-gray-900">
+                      {barangay.name}
+                    </div>
                     {'oldName' in barangay && barangay.oldName && (
                       <div className="mt-0.5 text-xs font-normal text-gray-500">
                         Formerly {barangay.oldName}
                       </div>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-gray-700">
-                    <div>{barangay.psgc10DigitCode}</div>
-                    <div className="mt-0.5 text-gray-500">{barangay.code}</div>
+                  <td className="px-4 py-3 align-top">
+                    <div className="font-mono text-xs text-gray-700">
+                      {barangay.psgc10DigitCode}
+                    </div>
+                    <div className="mt-0.5 text-xs text-gray-500">
+                      {barangay.code}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-right font-semibold text-gray-900 align-top">
+                    {formatPopulation(
+                      'population2020' in barangay && barangay.population2020
+                        ? barangay.population2020
+                        : undefined
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right text-sm text-gray-600 align-top">
+                    {'share2020' in barangay && barangay.share2020
+                      ? barangay.share2020
+                      : '—'}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        <div
+          role="note"
+          className="mt-4 rounded-md border-l-4 border-yellow-400 bg-yellow-50 p-4 text-base text-gray-800 leading-relaxed"
+        >
+          <div className="font-semibold">Note:</div>
+          <div className="mt-1">
+            Barangay population figures shown are from the{' '}
+            <strong>2020 census</strong>. The municipal total shown above is the{' '}
+            <strong>2024 census</strong>
+            municipality total. Barangay-level 2024 counts are not currently
+            available in this dataset.
+          </div>
         </div>
       </ScrollReveal>
 
