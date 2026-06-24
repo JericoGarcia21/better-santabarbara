@@ -11,7 +11,7 @@ export default function Hero() {
   const [showDisclaimer, setShowDisclaimer] = useState(true);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setShowDisclaimer(false), 10000);
+    const timer = window.setTimeout(() => setShowDisclaimer(false), 15000);
 
     return () => window.clearTimeout(timer);
   }, []);

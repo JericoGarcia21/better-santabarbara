@@ -30,19 +30,17 @@ const Footer: React.FC = () => {
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#f2c91d]" />
           <div className="max-w-5xl text-sm leading-6 text-gray-200 sm:text-base sm:leading-7">
             <p>
-              <strong className="text-white">
-                Independent portal disclaimer:
-              </strong>{' '}
-              Information on this portal is compiled from publicly available
-              open-source data and may not reflect the latest records of the
-              Municipality of Santa Barbara. This independent community portal
-              was created by a private citizen of Santa Barbara and is not an
-              official LGU data portal. Please verify critical information with
-              the municipal government.
-            </p>
-            <p className="mt-2 text-gray-300">
-              correct, and update public information. Until then, this portal
-              does not claim LGU approval, endorsement, or partnership.
+              <strong className="text-white">Disclaimer:</strong> Independent
+              portal disclaimer: Information on this portal is compiled from
+              publicly available open-source data and may not reflect the latest
+              records of the Municipality of Santa Barbara. This independent
+              community portal was created by a private citizen of Santa Barbara
+              and is not an official LGU data portal. Please verify critical
+              information with the municipal government. Once contact is
+              established with the Santa Barbara LGU, its offices will be
+              invited to review the portal and help verify, correct, and update
+              public information. Until then, this portal does not claim LGU
+              approval, endorsement, or partnership.
             </p>
           </div>
         </div>
