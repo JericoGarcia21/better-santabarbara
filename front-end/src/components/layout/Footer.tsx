@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Facebook, Info, Instagram, Twitter, Youtube } from 'lucide-react';
 import { footerNavigation } from '../../data/navigation';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,29 @@ const Footer: React.FC = () => {
   return (
     <footer className="border-t-4 border-[#f2c91d] bg-gray-900 text-white">
       <div className="container mx-auto px-4 pt-12 pb-8">
+        <div className="mb-10 flex items-start gap-3 rounded-md border border-gray-700 bg-gray-800/70 p-4 sm:p-5">
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#f2c91d]" />
+          <div className="max-w-5xl text-xs leading-5 text-gray-300 sm:text-sm sm:leading-6">
+            <p>
+              <strong className="text-white">
+                Independent portal disclaimer:
+              </strong>{' '}
+              Information on this portal is compiled from publicly available
+              open-source data and may not reflect the latest records of the
+              Municipality of Santa Barbara. This independent community portal
+              was created by a private citizen of Santa Barbara and is not an
+              official LGU data portal. Please verify critical information with
+              the municipal government.
+            </p>
+            <p className="mt-2 text-gray-400">
+              Once contact is established with the Santa Barbara LGU, its
+              offices will be invited to review the portal and help verify,
+              correct, and update public information. Until then, this portal
+              does not claim LGU approval, endorsement, or partnership.
+            </p>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
@@ -37,14 +60,6 @@ const Footer: React.FC = () => {
             </p>
             <p className="mb-5 inline-flex rounded-full border border-[#f2c91d]/40 bg-[#f2c91d]/10 px-3 py-1.5 text-sm font-semibold text-[#f2c91d]">
               Cost to the People of Santa Barbara: ₱0.
-            </p>
-            <p className="mb-5 text-xs leading-5 text-gray-500">
-              Disclaimer: Information on this portal is compiled from publicly
-              available open-source data and may not reflect the latest records
-              of the Municipality of Santa Barbara. This independent community
-              portal was created by a private citizen of Santa Barbara and is
-              not an official LGU data portal. Please verify critical
-              information with the municipal government.
             </p>
             <div className="flex space-x-4">
               {footerNavigation.socialLinks.map(link => (

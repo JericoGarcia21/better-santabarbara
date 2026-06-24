@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Clock3, RefreshCw } from 'lucide-react';
 
 const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'SGD', 'HKD', 'AUD', 'CAD'];
@@ -114,28 +114,30 @@ export default function LiveCivicData() {
     return () => controller.abort();
   }, []);
 
-  const philippineTime = useMemo(() => {
-    if (!timeSync) return null;
-    const elapsed = performance.now() - timeSync.syncedAt;
-    return new Intl.DateTimeFormat('en-PH', {
-      hour: 'numeric',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true,
-      timeZone: 'Asia/Manila',
-    }).format(new Date(timeSync.epochMs + elapsed));
-  }, [tick, timeSync]);
+  const elapsed = timeSync ? performance.now() - timeSync.syncedAt : 0;
+  const currentPhilippineDate = timeSync
+    ? new Date(timeSync.epochMs + elapsed)
+    : null;
+  const philippineTime = currentPhilippineDate
+    ? new Intl.DateTimeFormat('en-PH', {
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Manila',
+      }).format(currentPhilippineDate)
+    : null;
+  const philippineDate = currentPhilippineDate
+    ? new Intl.DateTimeFormat('en-PH', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'Asia/Manila',
+      }).format(currentPhilippineDate)
+    : null;
 
-  const philippineDate = useMemo(() => {
-    if (!timeSync) return null;
-    const elapsed = performance.now() - timeSync.syncedAt;
-    return new Intl.DateTimeFormat('en-PH', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      timeZone: 'Asia/Manila',
-    }).format(new Date(timeSync.epochMs + elapsed));
-  }, [tick, timeSync]);
+  // Keep the component subscribed to the one-second render tick.
+  void tick;
 
   const pesoEquivalent = exchange?.rates[currency]
     ? 1 / exchange.rates[currency]
@@ -143,12 +145,12 @@ export default function LiveCivicData() {
 
   return (
     <div
-      className="mr-6 hidden w-96 shrink-0 items-center justify-center gap-3 border-r border-white/25 pr-6 text-center xl:flex"
+      className="mr-5 hidden w-[25rem] shrink-0 grid-cols-[13.5rem_1px_9.5rem] items-center gap-3 border-r border-white/25 pr-5 xl:grid"
       title="Philippine time from WorldTimeAPI. Indicative exchange reference from Frankfurter using European Central Bank data."
     >
-      <div className="flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] font-semibold text-white">
-        <Clock3 className="h-3.5 w-3.5 text-[#f2c91d]" />
-        <span>
+      <div className="flex min-w-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold text-white">
+        <Clock3 className="h-3.5 w-3.5 shrink-0 text-[#f2c91d]" />
+        <span className="block w-[12rem] tabular-nums">
           {philippineDate && philippineTime
             ? `${philippineDate} · ${philippineTime}`
             : 'Time unavailable'}
@@ -156,14 +158,14 @@ export default function LiveCivicData() {
         {!philippineTime && <RefreshCw className="h-3 w-3 opacity-60" />}
       </div>
       <div className="h-8 w-px shrink-0 bg-white/20" />
-      <div>
-        <div className="flex items-center justify-center gap-1 whitespace-nowrap text-[11px] text-white/80">
+      <div className="min-w-0">
+        <div className="grid grid-cols-[auto_3.5rem_auto_4.75rem] items-center gap-1 whitespace-nowrap text-[11px] text-white/80">
           <span>1</span>
           <select
             value={currency}
             onChange={event => setCurrency(event.target.value)}
             aria-label="Foreign currency"
-            className="border-0 bg-transparent p-0 font-bold text-[#f2c91d] focus:outline-none"
+            className="w-14 border-0 bg-transparent p-0 font-bold text-[#f2c91d] focus:outline-none"
           >
             {currencies.map(code => (
               <option key={code} value={code} className="text-gray-900">
@@ -172,11 +174,11 @@ export default function LiveCivicData() {
             ))}
           </select>
           <span>=</span>
-          <span className="font-semibold text-white">
-            {pesoEquivalent ? `₱${pesoEquivalent.toFixed(2)}` : 'Unavailable'}
+          <span className="block w-[4.75rem] text-right font-semibold tabular-nums text-white">
+            {pesoEquivalent ? `₱${pesoEquivalent.toFixed(2)}` : '—'}
           </span>
         </div>
-        <div className="mt-1 text-[9px] uppercase tracking-wide text-white/50">
+        <div className="mt-1 whitespace-nowrap text-left text-[9px] uppercase tracking-wide text-white/50">
           Indicative reference rate
         </div>
       </div>
