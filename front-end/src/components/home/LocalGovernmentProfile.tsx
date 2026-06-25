@@ -15,6 +15,7 @@ import { Heading } from '../ui/Heading';
 import Section from '../ui/Section';
 import { Text } from '../ui/Text';
 import ScrollReveal from '../ui/ScrollReveal';
+import OfficialsDirectory from './OfficialsDirectory';
 
 const formatPopulation = (val?: string) => {
   if (!val) return '—';
@@ -442,6 +443,8 @@ export default function LocalGovernmentProfile() {
           </ScrollReveal>
         );
       })()}
+
+      <OfficialsDirectory />
 
       <ScrollReveal className="mt-10 border-t border-gray-200 pt-8">
         <div className="flex items-center gap-3">
