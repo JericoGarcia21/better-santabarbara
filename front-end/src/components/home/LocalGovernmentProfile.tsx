@@ -90,7 +90,7 @@ export default function LocalGovernmentProfile() {
   const [barangayPage, setBarangayPage] = useState(1);
   const totalBarangayPages = useMemo(
     () => Math.ceil(localGovernmentBarangays.length / BARANGAYS_PER_PAGE),
-    [localGovernmentBarangays.length]
+    []
   );
   const currentBarangays = useMemo(
     () =>
@@ -98,7 +98,7 @@ export default function LocalGovernmentProfile() {
         (barangayPage - 1) * BARANGAYS_PER_PAGE,
         barangayPage * BARANGAYS_PER_PAGE
       ),
-    [barangayPage, localGovernmentBarangays]
+    [barangayPage]
   );
 
   const goToPage = (page: number) => {

@@ -3,7 +3,7 @@ import Breadcrumbs from '../components/ui/Breadcrumbs';
 import { Heading } from '../components/ui/Heading';
 import { Text } from '../components/ui/Text';
 import { Banner } from '@bettergov/kapwa/banner';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -23,6 +23,7 @@ import {
   type CategoryIndex,
 } from '../data/yamlLoader';
 import SEO from '../components/SEO';
+import VerificationNotice from '../components/VerificationNotice';
 
 interface DocumentProps {
   theme?: string;
@@ -80,7 +81,7 @@ export default function Document({
               href: `${sectionHref}/${category}`,
             },
             {
-              label: documentSlug,
+              label: index.title ?? documentSlug,
               href: `${sectionHref}/${category}/${documentSlug}`,
             },
           ]);
@@ -126,6 +127,35 @@ export default function Document({
     );
   }
 
+  if (categoryType === 'service') {
+    return (
+      <>
+        <SEO
+          title="Service information pending LGU verification"
+          description="Detailed service information is hidden until it can be reviewed or confirmed with the Santa Barbara LGU."
+          keywords="government services, LGU verification, Santa Barbara"
+        />
+        <Section className="p-3 mb-12">
+          <Breadcrumbs className="mb-8" items={breadcrumbs} />
+          <VerificationNotice context="services" />
+          <Card className="mb-8 border-t-4 border-primary-500">
+            <CardContent>
+              <Heading level={2}>
+                Service information pending LGU verification
+              </Heading>
+              <Text className="mt-3 text-gray-600">
+                This service page is intentionally hidden for now. BetterGov
+                will publish the service requirements, steps, fees, and office
+                contacts only after the information is reviewed or confirmed
+                with the Santa Barbara LGU.
+              </Text>
+            </CardContent>
+          </Card>
+        </Section>
+      </>
+    );
+  }
+
   if (error) {
     return (
       <Section className="p-3 mb-12">
@@ -142,6 +172,19 @@ export default function Document({
 
   if (nestedIndex) {
     const nestedPages: Subcategory[] = nestedIndex.pages;
+    const sectionHref =
+      categoryType === 'government' ? '/government' : '/services';
+    const renderNestedCard = (page: Subcategory, className: string) => (
+      <Card hoverable={Boolean(page.slug)} className={className}>
+        <CardContent>
+          <h4 className="text-lg font-medium text-gray-900">{page.name}</h4>
+          {page.description && (
+            <p className="mt-2 text-sm text-gray-600">{page.description}</p>
+          )}
+        </CardContent>
+      </Card>
+    );
+
     return (
       <>
         <SEO
@@ -150,6 +193,9 @@ export default function Document({
         />
         <Section className="p-3 mb-12">
           <Breadcrumbs className="mb-8" items={breadcrumbs} />
+          <VerificationNotice
+            context={categoryType === 'government' ? 'government' : 'services'}
+          />
           {nestedIndex.title && (
             <Heading level={2}>{nestedIndex.title}</Heading>
           )}
@@ -161,35 +207,29 @@ export default function Document({
           {nestedIndex.layout === 'grid' ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {nestedPages.map((page, i) => (
-                <Card hoverable key={page.slug ?? i} className="h-full">
-                  <CardContent>
-                    <h4 className="text-lg font-medium text-gray-900">
-                      {page.name}
-                    </h4>
-                    {page.description && (
-                      <p className="mt-2 text-sm text-gray-600">
-                        {page.description}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
+                <div key={page.slug ?? i}>
+                  {page.slug ? (
+                    <Link to={`${sectionHref}/${documentSlug}/${page.slug}`}>
+                      {renderNestedCard(page, 'h-full')}
+                    </Link>
+                  ) : (
+                    renderNestedCard(page, 'h-full')
+                  )}
+                </div>
               ))}
             </div>
           ) : (
             <div className="space-y-4">
               {nestedPages.map((page, i) => (
-                <Card key={page.slug ?? i} className="mb-4">
-                  <CardContent>
-                    <h4 className="text-lg font-medium text-gray-900">
-                      {page.name}
-                    </h4>
-                    {page.description && (
-                      <p className="mt-2 text-sm text-gray-600">
-                        {page.description}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
+                <div key={page.slug ?? i}>
+                  {page.slug ? (
+                    <Link to={`${sectionHref}/${documentSlug}/${page.slug}`}>
+                      {renderNestedCard(page, 'mb-4')}
+                    </Link>
+                  ) : (
+                    renderNestedCard(page, 'mb-4')
+                  )}
+                </div>
               ))}
             </div>
           )}
@@ -214,6 +254,9 @@ export default function Document({
       />
       <Section className="p-3 mb-12">
         <Breadcrumbs className="mb-8" items={breadcrumbs} />
+        <VerificationNotice
+          context={categoryType === 'government' ? 'government' : 'services'}
+        />
         <Card className="mb-8 markdown-content">
           <CardHeader>
             {markdownContent.description && (

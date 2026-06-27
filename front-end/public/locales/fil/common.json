@@ -11,7 +11,18 @@
     "services": "Mga Serbisyo",
     "government": "Pamahalaan",
     "transparency": "Transparensiya",
-    "weatherAlerts": "Panahon at mga Babala"
+    "weatherAlerts": "Panahon at mga Babala",
+    "healthServices": "Serbisyong Pangkalusugan",
+    "education": "Edukasyon",
+    "businessLivelihood": "Negosyo at Kabuhayan",
+    "jobsOpportunities": "Trabaho at Oportunidad",
+    "socialWelfare": "Kagalingang Panlipunan",
+    "agricultureFisheries": "Agrikultura at Pangisdaan",
+    "infrastructurePublicWorks": "Imprastraktura at Pagawaing Bayan",
+    "garbageWasteDisposal": "Basura at Pamamahala ng Solid Waste",
+    "environment": "Kapaligiran",
+    "disasterPreparedness": "Paghahanda sa Sakuna",
+    "housingLandUse": "Pabahay at Paggamit ng Lupa"
   },
   "hero": {
     "title": "Maligayang pagdating sa BetterGov.ph",

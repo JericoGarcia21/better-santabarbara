@@ -1,5 +1,5 @@
 /**
- * Utility to load markdown content dynamically based on slug
+ * Utility to load markdown content dynamically based on slug.
  */
 
 /**
@@ -23,37 +23,61 @@ export interface MarkdownContent {
   data?: Record<string, unknown>;
 }
 
+const markdownModules = import.meta.glob('../../content/**/*.md', {
+  query: '?raw',
+  import: 'default',
+});
+
+const jsonModules = import.meta.glob('../../content/**/*.json', {
+  import: 'default',
+});
+
+async function loadOptionalModule<T>(
+  modules: Record<string, () => Promise<unknown>>,
+  paths: string[]
+): Promise<T | null> {
+  for (const path of paths) {
+    const loader = modules[path];
+    if (!loader) continue;
+
+    return (await loader()) as T;
+  }
+
+  return null;
+}
+
 /**
  * Loads markdown content from the appropriate content directory.
- * Also attempts to load a companion JSON file (same slug) for template
- * variable substitution and structured data.
- * @param documentSlug - The document slug (filename without .md extension)
- * @param categorySlug - The category slug (parent directory)
- * @param categoryType - Whether this is a 'service' or 'government' document
+ * Looks for translated content first at content/{lang}/..., then falls back
+ * to the default English content tree.
  */
 export async function loadMarkdownContent(
   documentSlug: string,
   categorySlug: string,
-  categoryType: 'service' | 'government'
+  categoryType: 'service' | 'government',
+  language = 'en'
 ): Promise<MarkdownContent> {
   try {
     const dir = categoryType === 'government' ? 'government' : 'services';
+    const localizedPrefix = `../../content/${language}/${dir}/${categorySlug}/${documentSlug}`;
+    const defaultPrefix = `../../content/${dir}/${categorySlug}/${documentSlug}`;
 
-    // Try to load companion JSON for template data
-    let data: Record<string, unknown> = {};
-    try {
-      const jsonModule = await import(
-        `../../content/${dir}/${categorySlug}/${documentSlug}.json`
-      );
-      data = jsonModule.default;
-    } catch {
-      // No companion JSON — that's fine
+    const data =
+      (await loadOptionalModule<Record<string, unknown>>(jsonModules, [
+        `${localizedPrefix}.json`,
+        `${defaultPrefix}.json`,
+      ])) ?? {};
+
+    const rawContent = await loadOptionalModule<string>(markdownModules, [
+      `${localizedPrefix}.md`,
+      `${defaultPrefix}.md`,
+    ]);
+
+    if (!rawContent) {
+      throw new Error(`Document not found: ${documentSlug}`);
     }
 
-    const module = await import(
-      `../../content/${dir}/${categorySlug}/${documentSlug}.md?raw`
-    );
-    const content = interpolate(module.default, data);
+    const content = interpolate(rawContent, data);
 
     const titleMatch = content.match(/^#\s+(.+)$/m);
     const title = titleMatch ? titleMatch[1] : undefined;

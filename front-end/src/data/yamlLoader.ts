@@ -31,6 +31,11 @@ export interface CategoryIndexData {
 import servicesYamlContent from './services.yaml?raw';
 import governmentActivitiesYamlContent from './government.yaml?raw';
 
+const localizedYamlModules = import.meta.glob('../../content/**/*.yaml', {
+  query: '?raw',
+  import: 'default',
+});
+
 // Import all category index files statically
 import healthServicesIndex from '../../content/services/health-services/index.yaml?raw';
 import educationIndex from '../../content/services/education/index.yaml?raw';
@@ -79,11 +84,53 @@ export interface CategoryIndex {
   pages: Subcategory[];
 }
 
+async function loadRawYaml(paths: string[]): Promise<string | null> {
+  for (const path of paths) {
+    const loader = localizedYamlModules[path];
+    if (!loader) continue;
+
+    return (await loader()) as string;
+  }
+
+  return null;
+}
+
+export async function loadCategoryData(
+  type: 'services' | 'government',
+  language = 'en'
+): Promise<CategoryData> {
+  const fallback =
+    type === 'government' ? governmentCategories : serviceCategories;
+  const localizedPath = `../../content/${language}/${type}.yaml`;
+  const rawYaml = await loadRawYaml([localizedPath]);
+
+  if (!rawYaml) return fallback;
+
+  try {
+    return yaml.load(rawYaml) as CategoryData;
+  } catch (parseError) {
+    console.warn(
+      `Failed to parse localized ${type} YAML for ${language}:`,
+      parseError
+    );
+    return fallback;
+  }
+}
+
 // Function to load category index data
 export async function loadCategoryIndex(
-  categorySlug: string
+  categorySlug: string,
+  language = 'en'
 ): Promise<CategoryIndex> {
-  const yamlContent = categoryIndexMap[categorySlug];
+  const localizedPath = Object.keys(localizedYamlModules).find(
+    path =>
+      path.startsWith(`../../content/${language}/`) &&
+      path.endsWith(`/${categorySlug}/index.yaml`)
+  );
+  const localizedContent = localizedPath
+    ? await loadRawYaml([localizedPath])
+    : null;
+  const yamlContent = localizedContent ?? categoryIndexMap[categorySlug];
   if (!yamlContent) {
     return { layout: 'list', pages: [] };
   }
@@ -110,14 +157,16 @@ export async function loadCategoryIndex(
 const categoryCache = new Map<string, CategoryIndex>();
 
 export async function getCategorySubcategories(
-  categorySlug: string
+  categorySlug: string,
+  language = 'en'
 ): Promise<CategoryIndex> {
-  if (categoryCache.has(categorySlug)) {
-    return categoryCache.get(categorySlug)!;
+  const cacheKey = `${language}:${categorySlug}`;
+  if (categoryCache.has(cacheKey)) {
+    return categoryCache.get(cacheKey)!;
   }
 
-  const result = await loadCategoryIndex(categorySlug);
-  categoryCache.set(categorySlug, result);
+  const result = await loadCategoryIndex(categorySlug, language);
+  categoryCache.set(cacheKey, result);
   return result;
 }
 

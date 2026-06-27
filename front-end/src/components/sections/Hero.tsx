@@ -20,7 +20,7 @@ export default function Hero() {
     <>
       <section
         id="top"
-        className="relative scroll-mt-28 bg-gradient-to-br from-primary-500 to-[#003d82] px-4 pb-40 pt-16 text-center text-white sm:pb-32 md:pt-20"
+        className="relative min-h-[520px] scroll-mt-28 bg-gradient-to-br from-primary-500 to-[#003d82] px-4 pb-40 pt-16 text-center text-white sm:pb-32 md:min-h-[500px] md:pt-20"
       >
         <ScrollReveal className="mx-auto max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/20">
@@ -54,15 +54,15 @@ export default function Hero() {
         <div
           role="note"
           aria-label="Data disclaimer"
-          className={`absolute inset-x-4 bottom-5 z-10 mx-auto flex max-w-4xl items-start gap-3 rounded-lg border border-[#f2c91d]/50 bg-primary-950/95 px-4 py-4 text-left shadow-xl backdrop-blur-sm transition-all duration-700 sm:items-center sm:px-5 ${
+          className={`absolute inset-x-4 bottom-5 z-10 mx-auto flex max-w-4xl items-start gap-3 rounded-lg border border-[#f2c91d] bg-white px-4 py-4 text-left shadow-xl transition-all duration-700 sm:items-center sm:px-5 ${
             showDisclaimer
               ? 'translate-y-0 opacity-100'
               : 'pointer-events-none translate-y-2 opacity-0'
           }`}
         >
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#f2c91d] sm:mt-0" />
-          <p className="whitespace-pre-line text-sm leading-6 text-white/95 sm:text-base sm:leading-7">
-            <strong className="text-white">Disclaimer:</strong> Independent
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary-600 sm:mt-0" />
+          <p className="whitespace-pre-line text-sm leading-6 text-gray-800 sm:text-base sm:leading-7">
+            <strong className="text-gray-950">Disclaimer:</strong> Independent
             portal disclaimer: Information on this portal is compiled from
             publicly available open-source data and may not reflect the latest
             records of the Municipality of Santa Barbara. This independent

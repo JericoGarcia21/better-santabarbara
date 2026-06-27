@@ -14,13 +14,13 @@ const Home: React.FC = () => {
         description={`BetterGov portal for ${localGovernment.name}, ${localGovernment.province}. Access local services, officials, and public information.`}
         keywords={`Santa Barbara Pangasinan, ${localGovernment.name}, local government, services, public services, civic services`}
       />
-      <main className="flex-grow">
+      <>
         <Hero />
         <LocationDemographicsSection showForecast={false} />
         <LocalGovernmentProfile />
         <ServicesSection />
         <GovernmentActivitySection />
-      </main>
+      </>
     </>
   );
 };
