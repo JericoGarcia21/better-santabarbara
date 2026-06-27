@@ -1,48 +1,61 @@
 import Section from '../components/ui/Section';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Heading } from '../components/ui/Heading';
 import { Text } from '../components/ui/Text';
 import {
   serviceCategories,
-  getCategorySubcategories,
+  loadCategoryData,
   type Subcategory,
   type CategoryIndex,
+  type CategoryData,
 } from '../data/yamlLoader';
-import * as LucideIcons from 'lucide-react';
+import { getIconComponent } from '../lib/iconRegistry';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 import ServicesSection from '../components/home/ServicesSection';
 import SEO from '../components/SEO';
 import { Card, CardContent } from '@bettergov/kapwa/card';
 import { Banner } from '@bettergov/kapwa/banner';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import VerificationNotice from '../components/VerificationNotice';
 
 const Services: React.FC = () => {
   const { category } = useParams();
+  const { i18n } = useTranslation('common');
+  const [categoriesData, setCategoriesData] =
+    useState<CategoryData>(serviceCategories);
   const [categoryIndex, setCategoryIndex] = useState<CategoryIndex>({
     layout: 'list',
     pages: [],
   });
-  const [loading, setLoading] = useState(false);
   const subcategories: Subcategory[] = categoryIndex.pages;
 
   const getCategory = () => {
-    return serviceCategories.categories.find(c => c.slug === category);
+    return categoriesData.categories.find(c => c.slug === category);
   };
 
   const categoryData = getCategory();
-  const Icon = LucideIcons[
-    categoryData?.icon as keyof typeof LucideIcons
-  ] as React.ComponentType<{ className?: string }>;
+  const Icon = getIconComponent(categoryData?.icon);
 
   useEffect(() => {
-    if (category && categoryData) {
-      setLoading(true);
-      getCategorySubcategories(category)
-        .then(setCategoryIndex)
-        .catch(console.error)
-        .finally(() => setLoading(false));
-    }
-  }, [category, categoryData]);
+    loadCategoryData('services', i18n.language).then(setCategoriesData);
+  }, [i18n.language]);
+
+  useEffect(() => {
+    setCategoryIndex({
+      layout: 'list',
+      pages: categoryData
+        ? [
+            {
+              name: categoryData.category,
+              slug: categoryData.slug,
+              description:
+                'Detailed service information will be added after LGU review.',
+            },
+          ]
+        : [],
+    });
+  }, [categoryData]);
 
   if (!category) {
     return (
@@ -53,8 +66,8 @@ const Services: React.FC = () => {
           keywords="government services, public services, local government, civic services"
         />
         <ServicesSection
-          title={`All local government services`}
-          description={`All services provided by the ${import.meta.env.VITE_GOVERNMENT_NAME} government. Find what you need for citizenship, business, education, and more.`}
+          title="Local government services"
+          description="Service information is temporarily limited while BetterGov awaits LGU verification."
         />
       </>
     );
@@ -82,80 +95,67 @@ const Services: React.FC = () => {
       />
       <Section className="p-3 mb-12">
         <Breadcrumbs className="mb-8" />
+        <VerificationNotice context="services" />
         <Icon className="h-8 w-8 mb-4 text-primary-600 rounded-md" />
         <Heading>{categoryData.category || category}</Heading>
-        <Text className="text-gray-600 mb-6">{categoryData.description}</Text>
+        <Text className="text-gray-600 mb-6">
+          Detailed information for this service category is hidden until it can
+          be reviewed or confirmed with the Santa Barbara LGU.
+        </Text>
 
-        {loading ? (
-          <div className="flex justify-center items-center p-8">
-            <Text>Loading services...</Text>
-          </div>
-        ) : (
-          <>
-            {categoryIndex.title && (
-              <Heading level={3}>{categoryIndex.title}</Heading>
-            )}
-            {categoryIndex.description && (
-              <Text className="text-gray-600 mb-4">
-                {categoryIndex.description}
-              </Text>
-            )}
-            {categoryIndex.layout === 'grid' ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {subcategories.map(subcategory => (
-                  <Link
-                    key={subcategory.slug}
-                    to={`/services/${category}/${subcategory.slug}`}
-                  >
-                    <Card
-                      hoverable
-                      className="h-full border-t-4 border-primary-500"
-                    >
-                      <CardContent>
-                        <h4 className="text-lg font-medium text-gray-900">
-                          {subcategory.name}
-                        </h4>
-                        {subcategory.description && (
-                          <p className="mt-2 text-sm text-gray-600">
-                            {subcategory.description}
-                          </p>
-                        )}
-                        <span className="inline-block px-2 py-1 mt-2 text-xs font-medium rounded-sm bg-gray-100 text-gray-800">
-                          {categoryData.category || category}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {subcategories.map(subcategory => (
-                  <Link
-                    key={subcategory.slug}
-                    to={`/services/${category}/${subcategory.slug}`}
-                  >
-                    <Card hoverable className="mb-4">
-                      <CardContent>
-                        <h4 className="text-lg font-medium text-gray-900">
-                          {subcategory.name}
-                        </h4>
-                        {subcategory.description && (
-                          <p className="mt-2 text-sm text-gray-600">
-                            {subcategory.description}
-                          </p>
-                        )}
-                        <span className="inline-block px-2 py-1 mt-2 text-xs font-medium rounded-sm bg-gray-100 text-gray-800">
-                          {categoryData.category || category}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+        <>
+          {categoryIndex.layout === 'grid' ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {subcategories.map(subcategory => (
+                <div key={subcategory.slug}>
+                  <Card className="h-full border-t-4 border-primary-500">
+                    <CardContent>
+                      <h4 className="text-lg font-medium text-gray-900">
+                        {subcategory.name}
+                      </h4>
+                      {subcategory.description && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          {subcategory.description}
+                        </p>
+                      )}
+                      <span className="inline-block px-2 py-1 mt-2 text-xs font-medium rounded-sm bg-gray-100 text-gray-800">
+                        {categoryData.category || category}
+                      </span>
+                      <span className="ml-2 inline-block rounded-sm bg-yellow-50 px-2 py-1 text-xs font-bold uppercase tracking-wide text-yellow-800">
+                        Pending LGU verification
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {subcategories.map(subcategory => (
+                <div key={subcategory.slug}>
+                  <Card className="mb-4">
+                    <CardContent>
+                      <h4 className="text-lg font-medium text-gray-900">
+                        {subcategory.name}
+                      </h4>
+                      {subcategory.description && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          {subcategory.description}
+                        </p>
+                      )}
+                      <span className="inline-block px-2 py-1 mt-2 text-xs font-medium rounded-sm bg-gray-100 text-gray-800">
+                        {categoryData.category || category}
+                      </span>
+                      <span className="ml-2 inline-block rounded-sm bg-yellow-50 px-2 py-1 text-xs font-bold uppercase tracking-wide text-yellow-800">
+                        Pending LGU verification
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       </Section>
     </>
   );

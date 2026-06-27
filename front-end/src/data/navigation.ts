@@ -35,7 +35,7 @@ export const mainNavigation: NavigationItem[] = [
       },
       {
         label: 'Weather & Alerts',
-        href: '/location-weather#weather-alerts',
+        href: '/location-weather',
       },
     ],
   },
@@ -105,8 +105,5 @@ export const footerNavigation = {
       label: 'Facebook',
       href: 'https://www.facebook.com/MunicipalityOfSta.BarbaraOfficial',
     },
-    { label: 'Twitter', href: 'https://twitter.com/govph' },
-    { label: 'Instagram', href: 'https://instagram.com/govph' },
-    { label: 'YouTube', href: 'https://youtube.com/govph' },
   ],
 };

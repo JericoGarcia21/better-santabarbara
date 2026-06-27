@@ -248,9 +248,118 @@ export default function LocationDemographicsSection({
         </Text>
       </div>
 
+      {!showDemographics && showForecast && weather && (
+        <div className="mb-8 scroll-mt-32" id="weather-alerts">
+          <div className="border-y border-gray-200 bg-white">
+            <div className="border-b border-gray-100 px-4 py-4">
+              <div className="font-semibold text-gray-900">
+                Five-day weather outlook
+              </div>
+              <div className="text-xs text-gray-500">
+                Forecast for Santa Barbara Â· Updated live by Open-Meteo
+                {weatherLastUpdated
+                  ? ` Â· Updated ${formatWeatherUpdate(weatherLastUpdated)}`
+                  : ''}
+              </div>
+              <div className="mt-1 text-xs font-medium text-primary-700 sm:hidden">
+                Swipe sideways to view all five days
+              </div>
+            </div>
+            <div className="overflow-x-auto" aria-label="Five-day forecast">
+              <div className="grid auto-cols-[220px] grid-flow-col gap-3 px-2 py-2 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-5">
+                {weather.daily.time.map((date, index) => (
+                  <div
+                    key={date}
+                    className="min-w-[220px] rounded-3xl border border-gray-200 bg-gray-50 px-4 py-5 text-center shadow-sm sm:min-w-0"
+                  >
+                    <div className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+                      {new Intl.DateTimeFormat('en-PH', {
+                        weekday: 'short',
+                      }).format(new Date(`${date}T12:00:00`))}
+                    </div>
+                    <div className="mt-1 text-xs font-medium text-gray-500">
+                      {new Intl.DateTimeFormat('en-PH', {
+                        month: 'short',
+                        day: 'numeric',
+                      }).format(new Date(`${date}T12:00:00`))}
+                    </div>
+                    <WeatherIcon
+                      code={weather.daily.weather_code[index]}
+                      className="mx-auto my-3 h-9 w-9 text-primary-600"
+                    />
+                    <div className="text-sm font-semibold text-gray-900">
+                      {weatherDescription(weather.daily.weather_code[index])}
+                    </div>
+                    <div className="mt-3 flex justify-center gap-3 text-sm">
+                      <span className="font-bold text-gray-950">
+                        H {Math.round(weather.daily.temperature_2m_max[index])}
+                        Â°
+                      </span>
+                      <span className="font-semibold text-gray-600">
+                        L {Math.round(weather.daily.temperature_2m_min[index])}
+                        Â°
+                      </span>
+                    </div>
+                    <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-2 text-sm font-semibold text-primary-700">
+                      <Droplets className="h-4 w-4" />
+                      {weather.daily.precipitation_probability_max[index]}%
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="grid gap-4 border-b border-gray-200 bg-gray-50 px-4 py-4 sm:grid-cols-3 sm:divide-x sm:divide-gray-200 sm:px-0">
+            <div className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
+              <div className="flex items-center gap-2 text-sm font-bold text-blue-900">
+                <CloudRain className="h-5 w-5" />
+                Rainfall watch
+              </div>
+              <div className="mt-3 text-lg font-semibold text-gray-900">
+                {getRainRisk(weather).label}
+              </div>
+              <div className="mt-2 text-sm leading-6 text-gray-600">
+                {getRainRisk(weather).detail}
+              </div>
+            </div>
+            <div className="rounded-3xl border border-orange-100 bg-white p-5 shadow-sm">
+              <div className="flex items-center gap-2 text-sm font-bold text-orange-900">
+                <Sun className="h-5 w-5" />
+                Heat watch
+              </div>
+              <div className="mt-3 text-lg font-semibold text-gray-900">
+                {getHeatRisk(weather.current.apparent_temperature).label}
+              </div>
+              <div className="mt-2 text-sm leading-6 text-gray-600">
+                Feels like {Math.round(weather.current.apparent_temperature)}
+                Â°C. {getHeatRisk(weather.current.apparent_temperature).detail}
+              </div>
+            </div>
+            <a
+              href="https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-3xl border border-red-100 bg-white p-5 shadow-sm transition hover:border-red-200 hover:bg-red-50"
+            >
+              <div className="flex items-center gap-2 text-sm font-bold text-red-900">
+                <ShieldAlert className="h-5 w-5" />
+                Typhoon warnings
+              </div>
+              <div className="mt-3 text-lg font-semibold text-gray-900">
+                Check official bulletins
+              </div>
+              <div className="mt-2 text-sm leading-6 text-gray-600">
+                Open the latest PAGASA tropical cyclone bulletin. Weather
+                forecasts on this page are not official storm warnings.
+              </div>
+            </a>
+          </div>
+        </div>
+      )}
+
       <div className="grid min-w-0 gap-8 lg:grid-cols-5">
         <div
-          id="weather-alerts"
+          id={showDemographics ? 'weather-alerts' : undefined}
           className={`min-w-0 scroll-mt-32 ${
             showDemographics ? 'lg:col-span-3' : 'lg:col-span-5'
           }`}
@@ -395,7 +504,7 @@ export default function LocationDemographicsSection({
               )}
             </div>
           </div>
-          {showForecast && weather && (
+          {showDemographics && showForecast && weather && (
             <div className="mt-6 border-y border-gray-200 bg-white">
               <div className="border-b border-gray-100 px-4 py-4">
                 <div className="font-semibold text-gray-900">
@@ -456,7 +565,7 @@ export default function LocationDemographicsSection({
               </div>
             </div>
           )}
-          {showForecast && weather && (
+          {showDemographics && showForecast && weather && (
             <div className="grid gap-4 border-b border-gray-200 bg-gray-50 px-4 py-4 sm:grid-cols-3 sm:divide-x sm:divide-gray-200 sm:px-0">
               <div className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2 text-sm font-bold text-blue-900">

@@ -11,7 +11,18 @@
     "services": "Services",
     "government": "Government",
     "transparency": "Transparency",
-    "weatherAlerts": "Weather & Alerts"
+    "weatherAlerts": "Weather & Alerts",
+    "healthServices": "Health Services",
+    "education": "Education",
+    "businessLivelihood": "Business and Livelihood",
+    "jobsOpportunities": "Jobs & Opportunities",
+    "socialWelfare": "Social Welfare",
+    "agricultureFisheries": "Agriculture & Fisheries",
+    "infrastructurePublicWorks": "Infrastructure & Public Works",
+    "garbageWasteDisposal": "Garbage and Waste Disposal",
+    "environment": "Environment",
+    "disasterPreparedness": "Disaster Preparedness",
+    "housingLandUse": "Housing & Land Use"
   },
   "hero": {
     "title": "Welcome to BetterGov.ph",

@@ -11,7 +11,18 @@
     "services": "Saray Serbisyo",
     "government": "Gobierno",
     "transparency": "Transparensiya",
-    "weatherAlerts": "Panahon tan Saray Pasakbay"
+    "weatherAlerts": "Panahon tan Saray Pasakbay",
+    "healthServices": "Saray Serbisyo ed Salun-at",
+    "education": "Edukasyon",
+    "businessLivelihood": "Negosyo tan Pangkabuhayan",
+    "jobsOpportunities": "Trabaho tan Saray Oportunidad",
+    "socialWelfare": "Sosyal ya Panangasiwa",
+    "agricultureFisheries": "Agrikultura tan Pangisdaan",
+    "infrastructurePublicWorks": "Imprastraktura tan Publikon Gawa",
+    "garbageWasteDisposal": "Basura tan Panangiyabuloy na Waste",
+    "environment": "Kalikasan",
+    "disasterPreparedness": "Pangandam ed Sakuna",
+    "housingLandUse": "Pabahay tan Panagusar na Daga"
   },
   "hero": {
     "title": "Maabig ya onsabi ed BetterGov.ph",
@@ -29,7 +40,7 @@
     "viewAllCategory": "Nengnengen Amin"
   },
   "governmentActivity": {
-    "title": "Lokal a Gobierno",
+    "title": "Saray Opisina tan Gawa na Lokal a Gobierno",
     "description": "Amtaen iray opisina, opisyal, tan aktibidad na lokal a gobierno."
   },
   "footer": {

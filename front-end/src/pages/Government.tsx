@@ -8,13 +8,14 @@ import {
   type Subcategory,
   type CategoryIndex,
 } from '../data/yamlLoader';
-import * as LucideIcons from 'lucide-react';
+import { getIconComponent } from '../lib/iconRegistry';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 import GovernmentActivitySection from '../components/home/GovernmentActivitySection';
 import SEO from '../components/SEO';
 import { Card, CardContent } from '@bettergov/kapwa/card';
 import { Banner } from '@bettergov/kapwa/banner';
 import { useState, useEffect } from 'react';
+import VerificationNotice from '../components/VerificationNotice';
 
 const Government: React.FC = () => {
   const { category } = useParams();
@@ -30,9 +31,7 @@ const Government: React.FC = () => {
   };
 
   const categoryData = getCategory();
-  const Icon = LucideIcons[
-    categoryData?.icon as keyof typeof LucideIcons
-  ] as React.ComponentType<{ className?: string }>;
+  const Icon = getIconComponent(categoryData?.icon);
 
   useEffect(() => {
     if (category && categoryData) {
@@ -48,13 +47,13 @@ const Government: React.FC = () => {
     return (
       <>
         <SEO
-          title="Services"
-          description={`All services provided by the ${import.meta.env.VITE_GOVERNMENT_NAME} government. Find what you need for citizenship, business, education, and more.`}
-          keywords="government services, public services, local government, civic services"
+          title="Government"
+          description={`Departments, offices, and public information from the ${import.meta.env.VITE_GOVERNMENT_NAME} government.`}
+          keywords="government departments, public offices, local government, civic information"
         />
         <GovernmentActivitySection
-          title={`All local government services`}
-          description={`All services provided by the ${import.meta.env.VITE_GOVERNMENT_NAME} government. Find what you need for citizenship, business, education, and more.`}
+          title="Local government information"
+          description={`Departments, offices, and public information from the ${import.meta.env.VITE_GOVERNMENT_NAME} government.`}
         />
       </>
     );
@@ -82,13 +81,14 @@ const Government: React.FC = () => {
       />
       <Section className="p-3 mb-12">
         <Breadcrumbs className="mb-8" />
+        <VerificationNotice context="government" />
         <Icon className="h-8 w-8 mb-4 text-primary-600 rounded-md" />
         <Heading>{categoryData.category || category}</Heading>
         <Text className="text-gray-600 mb-6">{categoryData.description}</Text>
 
         {loading ? (
           <div className="flex justify-center items-center p-8">
-            <Text>Loading services...</Text>
+            <Text>Loading government information...</Text>
           </div>
         ) : (
           <>
@@ -123,6 +123,9 @@ const Government: React.FC = () => {
                         <span className="inline-block px-2 py-1 mt-2 text-xs font-medium rounded-sm bg-gray-100 text-gray-800">
                           {categoryData.category || category}
                         </span>
+                        <span className="ml-2 inline-block rounded-sm bg-yellow-50 px-2 py-1 text-xs font-bold uppercase tracking-wide text-yellow-800">
+                          Pending LGU verification
+                        </span>
                       </CardContent>
                     </Card>
                   </Link>
@@ -147,6 +150,9 @@ const Government: React.FC = () => {
                         )}
                         <span className="inline-block px-2 py-1 mt-2 text-xs font-medium rounded-sm bg-gray-100 text-gray-800">
                           {categoryData.category || category}
+                        </span>
+                        <span className="ml-2 inline-block rounded-sm bg-yellow-50 px-2 py-1 text-xs font-bold uppercase tracking-wide text-yellow-800">
+                          Pending LGU verification
                         </span>
                       </CardContent>
                     </Card>

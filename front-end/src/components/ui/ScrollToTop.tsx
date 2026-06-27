@@ -5,12 +5,13 @@ export default function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
     if (hash) {
       const frame = window.requestAnimationFrame(() => {
         const target = document.getElementById(hash.slice(1));
-        const reduceMotion = window.matchMedia(
-          '(prefers-reduced-motion: reduce)'
-        ).matches;
 
         target?.scrollIntoView({
           behavior: reduceMotion ? 'auto' : 'smooth',
@@ -21,7 +22,7 @@ export default function ScrollToTop() {
       return () => window.cancelAnimationFrame(frame);
     }
 
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
   }, [pathname, hash]);
 
   return null;
