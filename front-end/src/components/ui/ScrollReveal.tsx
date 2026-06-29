@@ -24,6 +24,7 @@ export default function ScrollReveal({
 
     if (
       window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(max-width: 640px)').matches ||
       !('IntersectionObserver' in window)
     ) {
       setIsVisible(true);
