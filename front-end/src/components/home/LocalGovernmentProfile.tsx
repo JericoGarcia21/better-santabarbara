@@ -236,7 +236,20 @@ export default function LocalGovernmentProfile() {
 
         return (
           <ScrollReveal className="mt-8 grid gap-10 lg:grid-cols-[1fr_320px] lg:gap-8">
-            <div>
+            <div id="barangays" className="scroll-mt-32">
+              <div className="mb-6">
+                <div className="text-sm font-bold uppercase tracking-[0.22em] text-primary-700">
+                  Barangays
+                </div>
+                <Heading level={3} className="mt-3">
+                  {localGovernment.barangays} barangays of Santa Barbara
+                </Heading>
+                <Text className="max-w-2xl text-gray-700">
+                  Browse the municipality&apos;s barangays with PSGC codes and
+                  available 2020 barangay-level population figures.
+                </Text>
+              </div>
+
               <div className="space-y-4">
                 <div className="space-y-3 sm:hidden">
                   {currentBarangays.map(barangay => (
