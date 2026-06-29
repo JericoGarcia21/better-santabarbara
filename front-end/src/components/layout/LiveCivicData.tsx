@@ -148,7 +148,7 @@ export default function LiveCivicData() {
       className="hidden shrink-0 lg:flex lg:items-center lg:gap-4"
       title="Philippine time from WorldTimeAPI. Indicative exchange rates from Frankfurter using European Central Bank data."
     >
-      <div className="flex min-w-0 items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-white">
+      <div className="flex min-w-0 items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-white xl:text-base">
         <Clock3 className="h-4 w-4 shrink-0 text-[#f2c91d]" />
         <span className="block min-w-0 truncate tabular-nums">
           {philippineDate && philippineTime
@@ -159,7 +159,7 @@ export default function LiveCivicData() {
       </div>
       <div className="h-8 w-px shrink-0 bg-white/20" />
       <div className="min-w-0">
-        <div className="flex items-center gap-1 whitespace-nowrap text-sm text-white/80">
+        <div className="flex items-center gap-1 whitespace-nowrap text-sm text-white/80 xl:text-base">
           <span>1</span>
           <select
             value={currency}
