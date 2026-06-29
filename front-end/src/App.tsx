@@ -30,10 +30,10 @@ function App() {
     <HelmetProvider>
       <Router>
         <NuqsAdapter>
-          <div className="min-h-dvh">
+          <div className="flex min-h-dvh flex-col">
             <Navbar />
             <ScrollToTop />
-            <main>
+            <main className="flex-1">
               <Suspense fallback={<PageFallback />}>
                 <Routes>
                   <Route path="/" element={<Home />} />

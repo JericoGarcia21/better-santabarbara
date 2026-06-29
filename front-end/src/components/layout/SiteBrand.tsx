@@ -112,79 +112,83 @@ export default function SiteBrand({
           </div>
         </div>
 
-        <div className="pointer-events-none absolute left-0 top-full z-[80] hidden w-[min(680px,calc(100vw-2rem))] translate-y-3 overflow-hidden rounded-md border border-primary-200 bg-white text-gray-900 opacity-0 shadow-2xl ring-1 ring-black/5 transition duration-150 group-hover:translate-y-2 group-hover:opacity-100 group-focus-within:translate-y-2 group-focus-within:opacity-100 lg:block">
-          <div className="bg-primary-800 px-5 py-3 text-white">
-            <div className="text-sm font-bold">
-              BetterGov <span className="text-[#f2c91d]">Santa Barbara</span>
-            </div>
-            <div className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-white/75">
-              Logo symbolism
-            </div>
-          </div>
-
-          <div className="grid gap-5 p-5 md:grid-cols-[240px_1fr]">
-            <div className="rounded-md border border-primary-100 bg-primary-50 p-3">
-              <div className="flex h-48 items-center justify-center rounded bg-white shadow-inner">
-                <img
-                  src="/Logo/newlogo.png"
-                  alt="BetterGov Santa Barbara logo full preview"
-                  className="h-44 w-full scale-110 object-contain"
-                />
+        {enablePreview && (
+          <div className="pointer-events-none absolute left-0 top-full z-[80] hidden w-[min(920px,calc(100vw-2rem))] translate-y-3 overflow-hidden rounded-xl border border-primary-200 bg-white text-gray-900 opacity-0 shadow-2xl shadow-primary-950/20 ring-1 ring-black/5 transition duration-150 group-hover:translate-y-2 group-hover:opacity-100 group-focus-within:translate-y-2 group-focus-within:opacity-100 lg:block">
+            <div className="bg-primary-900 px-6 py-4 text-white">
+              <div className="text-base font-bold">
+                BetterGov <span className="text-[#f2c91d]">Santa Barbara</span>
               </div>
-              <p className="mt-3 text-center text-[11px] font-medium leading-4 text-primary-900">
-                Technology, agriculture, public service, and local progress in
-                one civic mark.
-              </p>
+              <div className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+                Logo symbolism
+              </div>
             </div>
 
-            <div>
-              <div className="grid gap-x-4 gap-y-2.5 text-xs leading-5 sm:grid-cols-2">
-                {logoSymbols.map(symbol => (
-                  <div
-                    key={symbol.label}
-                    className="border-l-2 border-[#f2c91d] pl-2"
-                  >
-                    <div className="font-bold text-gray-950">
-                      {symbol.label}
-                    </div>
-                    <div className="text-gray-600">{symbol.description}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-3 border-t border-gray-100 pt-3">
-                <div className="text-xs font-bold uppercase tracking-wide text-gray-500">
-                  Colors
+            <div className="grid gap-6 p-6 md:grid-cols-[300px_1fr]">
+              <div className="rounded-xl border border-primary-100 bg-gradient-to-b from-primary-50 to-white p-4 shadow-inner">
+                <div className="flex h-56 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-primary-100">
+                  <img
+                    src="/Logo/newlogo.png"
+                    alt="BetterGov Santa Barbara logo full preview"
+                    className="h-52 w-full scale-110 object-contain"
+                  />
                 </div>
-                <div className="mt-2 grid gap-2 text-xs sm:grid-cols-4">
-                  {logoColors.map(([color, meaning]) => (
+                <p className="mt-4 text-center text-sm font-semibold leading-5 text-primary-900">
+                  Technology, agriculture, public service, and local progress in
+                  one civic mark.
+                </p>
+              </div>
+
+              <div>
+                <div className="grid gap-3 text-sm leading-5 sm:grid-cols-2">
+                  {logoSymbols.map(symbol => (
                     <div
-                      key={color}
-                      className="rounded border border-gray-100 p-2"
+                      key={symbol.label}
+                      className="rounded-lg border border-gray-100 bg-white p-3 shadow-sm"
                     >
-                      <div className="flex items-center gap-1.5 font-bold text-gray-950">
-                        <span
-                          className={cn(
-                            'h-2.5 w-2.5 rounded-full',
-                            color === 'Blue' && 'bg-primary-600',
-                            color === 'Green' && 'bg-success-600',
-                            color === 'Gold' && 'bg-[#f2c91d]',
-                            color === 'White' &&
-                              'border border-gray-300 bg-white'
-                          )}
-                        />
-                        {color}
+                      <div className="border-l-3 border-[#f2c91d] pl-3 font-bold text-gray-950">
+                        {symbol.label}
                       </div>
-                      <div className="mt-1 leading-4 text-gray-600">
-                        {meaning}
+                      <div className="mt-1 pl-3 text-gray-600">
+                        {symbol.description}
                       </div>
                     </div>
                   ))}
                 </div>
+
+                <div className="mt-5 border-t border-gray-100 pt-4">
+                  <div className="text-xs font-bold uppercase tracking-[0.22em] text-gray-500">
+                    Colors
+                  </div>
+                  <div className="mt-3 grid gap-3 text-sm sm:grid-cols-4">
+                    {logoColors.map(([color, meaning]) => (
+                      <div
+                        key={color}
+                        className="rounded-lg border border-gray-100 bg-white p-3 shadow-sm"
+                      >
+                        <div className="flex items-center gap-2 font-bold text-gray-950">
+                          <span
+                            className={cn(
+                              'h-3 w-3 rounded-full ring-2 ring-white',
+                              color === 'Blue' && 'bg-primary-600',
+                              color === 'Green' && 'bg-success-600',
+                              color === 'Gold' && 'bg-[#f2c91d]',
+                              color === 'White' &&
+                                'border border-gray-300 bg-white'
+                            )}
+                          />
+                          {color}
+                        </div>
+                        <div className="mt-1.5 leading-5 text-gray-600">
+                          {meaning}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {showLargeLogo && (

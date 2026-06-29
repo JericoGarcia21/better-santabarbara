@@ -20,8 +20,17 @@ export default function Hero() {
     <>
       <section
         id="top"
-        className="relative min-h-[520px] scroll-mt-28 bg-gradient-to-br from-primary-500 to-[#003d82] px-4 pb-40 pt-16 text-center text-white sm:pb-32 md:min-h-[500px] md:pt-20"
+        className="relative isolate min-h-[520px] overflow-hidden scroll-mt-28 bg-primary-900 px-4 pb-40 pt-16 text-center text-white sm:pb-32 md:min-h-[500px] md:pt-20"
       >
+        <img
+          src="/Logo/sb_municipal_hall.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary-950/95 via-primary-800/85 to-primary-600/75" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(242,201,29,0.22),transparent_34rem)]" />
+
         <ScrollReveal className="mx-auto max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/20">
             <MapPin className="h-4 w-4 text-[#f2c91d]" />

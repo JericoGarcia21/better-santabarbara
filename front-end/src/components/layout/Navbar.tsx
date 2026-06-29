@@ -161,10 +161,10 @@ const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 bg-primary-700 shadow-lg shadow-primary-950/10">
       <div className="hidden border-b border-white/10 bg-primary-800 lg:block">
-        <div className="mx-auto flex h-10 max-w-screen-2xl items-center justify-between gap-6 px-6">
-          <div className="hotline-scroll flex min-w-0 items-center gap-4 overflow-x-auto text-xs text-white/85">
+        <div className="mx-auto flex h-12 max-w-screen-2xl items-center justify-between gap-6 px-6">
+          <div className="hotline-scroll flex min-w-0 items-center gap-5 overflow-x-auto text-sm text-white/85">
             <span className="flex shrink-0 items-center gap-2 font-bold uppercase tracking-wide text-[#f2c91d]">
-              <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+              <Phone className="h-4 w-4" aria-hidden="true" />
               Emergency
             </span>
             {EMERGENCY_HOTLINES.slice(0, 4).map(h => (
@@ -185,7 +185,7 @@ const Navbar: React.FC = () => {
             <LiveCivicData />
             <a
               href="https://bettergov.ph/join-us"
-              className="rounded-full bg-[#f2c91d] px-3 py-1.5 text-xs font-bold text-primary-900 transition hover:bg-white"
+              className="rounded-full bg-[#f2c91d] px-4 py-2 text-sm font-bold text-primary-900 transition hover:bg-white"
               rel="noreferrer"
               target="_blank"
             >
@@ -193,18 +193,18 @@ const Navbar: React.FC = () => {
             </a>
             <a
               href="https://www.gov.ph"
-              className="text-xs font-semibold text-white/75 transition-colors hover:text-white"
+              className="text-sm font-semibold text-white/75 transition-colors hover:text-white"
               rel="noreferrer"
               target="_blank"
             >
               GOV.PH
             </a>
             <div className="flex items-center gap-1.5">
-              <Globe className="h-3.5 w-3.5 text-white/70" aria-hidden="true" />
+              <Globe className="h-4 w-4 text-white/70" aria-hidden="true" />
               <select
                 value={i18n.language}
                 onChange={e => changeLanguage(e.target.value as LanguageType)}
-                className="border-0 bg-transparent p-0 text-xs font-semibold text-white focus:outline-none focus:ring-0"
+                className="border-0 bg-transparent p-0 text-sm font-semibold text-white focus:outline-none focus:ring-0"
                 aria-label="Language"
               >
                 {Object.entries(LANGUAGES).map(([code, language]) => (
@@ -225,7 +225,7 @@ const Navbar: React.FC = () => {
             onClick={closeMenu}
             className="min-w-0 shrink-0 rounded-md focus:outline-none focus:ring-2 focus:ring-white/40"
           >
-            <SiteBrand />
+            <SiteBrand enablePreview />
           </Link>
 
           <nav
