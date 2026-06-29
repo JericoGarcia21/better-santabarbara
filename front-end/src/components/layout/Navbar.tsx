@@ -161,27 +161,51 @@ const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 bg-primary-700 shadow-lg shadow-primary-950/10">
       <div className="hidden border-b border-white/10 bg-primary-800 lg:block">
-        <div className="mx-auto flex h-12 max-w-screen-2xl items-center justify-between gap-6 px-6">
-          <div className="hotline-scroll flex min-w-0 items-center gap-5 overflow-x-auto text-sm text-white/85">
-            <span className="flex shrink-0 items-center gap-2 font-bold uppercase tracking-wide text-[#f2c91d]">
-              <Phone className="h-4 w-4" aria-hidden="true" />
-              Emergency
-            </span>
-            {EMERGENCY_HOTLINES.slice(0, 4).map(h => (
-              <div key={h.label} className="flex shrink-0 items-center gap-1">
-                <span className="font-semibold text-white">{h.label}</span>
-                <a
-                  href={`tel:${h.numbers[0].replace(/\D/g, '')}`}
-                  className="font-medium text-white/80 hover:text-white"
-                  title={`Call ${h.label}`}
+        <div className="mx-auto flex min-h-12 max-w-screen-2xl items-center justify-between gap-6 px-4 py-2 xl:px-6">
+          <div
+            className="emergency-marquee min-w-0 flex-1 overflow-hidden"
+            aria-label="Santa Barbara emergency hotline numbers"
+          >
+            <div className="emergency-marquee-track flex w-max items-center gap-5 text-sm text-white/85">
+              {[0, 1].map(groupIndex => (
+                <div
+                  key={groupIndex}
+                  className="flex shrink-0 items-center gap-5"
+                  aria-hidden={groupIndex === 1}
                 >
-                  {h.numbers[0]}
-                </a>
-              </div>
-            ))}
+                  <span className="flex shrink-0 items-center gap-2 font-bold uppercase tracking-wide text-[#f2c91d]">
+                    <Phone className="h-4 w-4" aria-hidden="true" />
+                    Emergency Hotlines
+                  </span>
+                  {EMERGENCY_HOTLINES.map(h => (
+                    <div
+                      key={`${groupIndex}-${h.label}`}
+                      className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 ring-1 ring-white/10"
+                    >
+                      <span className="font-semibold text-white">
+                        {h.label}
+                      </span>
+                      <span className="flex items-center gap-2">
+                        {h.numbers.map(number => (
+                          <a
+                            key={number}
+                            href={`tel:${number.replace(/\D/g, '')}`}
+                            className="font-medium text-white/85 hover:text-white"
+                            title={`Call ${h.label}`}
+                            tabIndex={groupIndex === 1 ? -1 : undefined}
+                          >
+                            {number}
+                          </a>
+                        ))}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="flex shrink-0 items-center gap-4">
+          <div className="flex shrink-0 flex-wrap items-center gap-4">
             <LiveCivicData />
             <a
               href="https://bettergov.ph/join-us"

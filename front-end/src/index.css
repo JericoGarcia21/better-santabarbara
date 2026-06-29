@@ -260,3 +260,43 @@ body {
 .hotline-scroll::-webkit-scrollbar {
   display: none;
 }
+
+.emergency-marquee {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 2rem,
+    black calc(100% - 2rem),
+    transparent
+  );
+}
+
+.emergency-marquee-track {
+  animation: emergency-marquee 36s linear infinite;
+}
+
+.emergency-marquee:hover .emergency-marquee-track,
+.emergency-marquee:focus-within .emergency-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes emergency-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emergency-marquee {
+    mask-image: none;
+    overflow-x: auto;
+  }
+
+  .emergency-marquee-track {
+    animation: none;
+  }
+}
