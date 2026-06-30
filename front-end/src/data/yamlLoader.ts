@@ -31,10 +31,17 @@ export interface CategoryIndexData {
 import servicesYamlContent from './services.yaml?raw';
 import governmentActivitiesYamlContent from './government.yaml?raw';
 
-const localizedYamlModules = import.meta.glob('../../content/**/*.yaml', {
-  query: '?raw',
-  import: 'default',
-});
+const localizedYamlModules = import.meta.glob(
+  [
+    '../../content/**/*.yaml',
+    '!../../content/services/**/*.yaml',
+    '!../../content/government/**/*.yaml',
+  ],
+  {
+    query: '?raw',
+    import: 'default',
+  }
+);
 
 // Import all category index files statically
 import healthServicesIndex from '../../content/services/health-services/index.yaml?raw';

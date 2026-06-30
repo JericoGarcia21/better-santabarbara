@@ -30,6 +30,10 @@ export const mainNavigation: NavigationItem[] = [
         href: '/#barangays',
       },
       {
+        label: 'Barangay Captains',
+        href: '/barangay-captains',
+      },
+      {
         label: 'Map & Demographics',
         href: '/#location-demographics',
       },
