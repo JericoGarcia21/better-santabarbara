@@ -113,7 +113,7 @@ export default function SiteBrand({
         </div>
 
         {enablePreview && (
-          <div className="pointer-events-none absolute left-0 top-full z-[80] hidden w-[min(920px,calc(100vw-2rem))] translate-y-3 overflow-hidden rounded-xl border border-primary-200 bg-white text-gray-900 opacity-0 shadow-2xl shadow-primary-950/20 ring-1 ring-black/5 transition duration-150 group-hover:translate-y-2 group-hover:opacity-100 group-focus-within:translate-y-2 group-focus-within:opacity-100 lg:block">
+          <div className="pointer-events-none absolute left-0 top-full z-[80] hidden w-[min(1180px,calc(100vw-2rem))] translate-y-3 overflow-hidden rounded-xl border border-primary-200 bg-white text-gray-900 opacity-0 shadow-2xl shadow-primary-950/20 ring-1 ring-black/5 transition duration-150 group-hover:translate-y-2 group-hover:opacity-100 group-focus-within:translate-y-2 group-focus-within:opacity-100 lg:block">
             <div className="bg-primary-900 px-6 py-4 text-white">
               <div className="text-base font-bold">
                 BetterGov <span className="text-[#f2c91d]">Santa Barbara</span>
@@ -123,13 +123,13 @@ export default function SiteBrand({
               </div>
             </div>
 
-            <div className="grid gap-6 p-6 md:grid-cols-[300px_1fr]">
+            <div className="grid items-start gap-6 p-6 lg:grid-cols-[260px_1fr] xl:grid-cols-[280px_1fr]">
               <div className="rounded-xl border border-primary-100 bg-gradient-to-b from-primary-50 to-white p-4 shadow-inner">
-                <div className="flex h-56 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-primary-100">
+                <div className="flex h-48 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-primary-100 xl:h-52">
                   <img
                     src="/Logo/newlogo.png"
                     alt="BetterGov Santa Barbara logo full preview"
-                    className="h-52 w-full scale-110 object-contain"
+                    className="h-44 w-full scale-110 object-contain xl:h-48"
                   />
                 </div>
                 <p className="mt-4 text-center text-sm font-semibold leading-5 text-primary-900">
@@ -139,7 +139,7 @@ export default function SiteBrand({
               </div>
 
               <div>
-                <div className="grid gap-3 text-sm leading-5 sm:grid-cols-2">
+                <div className="grid gap-3 text-sm leading-5 lg:grid-cols-2 xl:grid-cols-3">
                   {logoSymbols.map(symbol => (
                     <div
                       key={symbol.label}

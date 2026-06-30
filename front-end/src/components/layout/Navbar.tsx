@@ -260,7 +260,7 @@ const Navbar: React.FC = () => {
             <Link
               to="/"
               onClick={scrollToPageTop}
-              className="rounded-md px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10 hover:text-[#f2c91d]"
+              className="rounded-md px-3 py-2 text-base font-semibold text-white transition hover:bg-white/10 hover:text-[#f2c91d]"
             >
               {t('navigation.home')}
             </Link>
@@ -268,7 +268,7 @@ const Navbar: React.FC = () => {
               <div key={item.label} className="group relative">
                 <Link
                   to={item.href}
-                  className="flex items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10 hover:text-[#f2c91d]"
+                  className="flex items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-base font-semibold text-white transition hover:bg-white/10 hover:text-[#f2c91d]"
                 >
                   {translateNavigation(item.label)}
                   {item.children && (

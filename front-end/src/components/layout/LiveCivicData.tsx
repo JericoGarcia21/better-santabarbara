@@ -159,13 +159,13 @@ export default function LiveCivicData() {
       </div>
       <div className="h-8 w-px shrink-0 bg-white/20" />
       <div className="min-w-0">
-        <div className="flex items-center gap-1 whitespace-nowrap text-sm text-white/80 xl:text-base">
+        <div className="flex items-center justify-center gap-1 whitespace-nowrap text-sm text-white/80 xl:text-base">
           <span>1</span>
           <select
             value={currency}
             onChange={event => setCurrency(event.target.value)}
             aria-label="Foreign currency"
-            className="border-0 bg-transparent p-0 text-right font-bold text-[#f2c91d] focus:outline-none"
+            className="w-14 border-0 bg-transparent p-0 text-center font-bold text-[#f2c91d] focus:outline-none"
           >
             {currencies.map(code => (
               <option key={code} value={code} className="text-gray-900">
