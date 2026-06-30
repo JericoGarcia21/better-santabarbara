@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
   const translateNavigation = useCallback(
     (label: string) => {
       const key = navigationTranslationKeys[label];
-      return key ? t(`navigation.${key}`) : label;
+      return key ? t(`navigation.${key}`, { defaultValue: label }) : label;
     },
     [t]
   );
