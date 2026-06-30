@@ -14,6 +14,7 @@ const Services = lazy(() => import('./pages/Services'));
 const Document = lazy(() => import('./pages/Document'));
 const Government = lazy(() => import('./pages/Government'));
 const LocationWeather = lazy(() => import('./pages/LocationWeather'));
+const BarangayCaptains = lazy(() => import('./pages/BarangayCaptains'));
 
 function PageFallback() {
   return (
@@ -51,6 +52,10 @@ function App() {
                   <Route
                     path="/location-weather"
                     element={<LocationWeather />}
+                  />
+                  <Route
+                    path="/barangay-captains"
+                    element={<BarangayCaptains />}
                   />
                   <Route
                     path="/government/:category/:documentSlug"

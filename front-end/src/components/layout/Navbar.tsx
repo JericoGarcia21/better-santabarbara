@@ -23,6 +23,7 @@ const navigationTranslationKeys: Record<string, string> = {
   'About the LGU': 'aboutLgu',
   'Local Officials': 'localOfficials',
   Barangays: 'barangays',
+  'Barangay Captains': 'barangayCaptains',
   'Map & Demographics': 'mapDemographics',
   Services: 'services',
   Government: 'government',
@@ -159,8 +160,8 @@ const Navbar: React.FC = () => {
   }, [searchItems, searchQuery]);
 
   return (
-    <header className="sticky top-0 z-50 bg-primary-700 shadow-lg shadow-primary-950/10">
-      <div className="hidden border-b border-white/10 bg-primary-800 lg:block">
+    <header className="sticky top-0 z-50 bg-primary-700 shadow-lg shadow-primary-950/10 transition-colors">
+      <div className="hidden border-b border-white/10 bg-primary-800 transition-colors lg:block">
         <div className="mx-auto flex min-h-12 max-w-screen-2xl items-center justify-between gap-6 px-4 py-2 xl:px-6">
           <div
             className="emergency-marquee min-w-0 flex-1 overflow-hidden"
@@ -458,7 +459,7 @@ const Navbar: React.FC = () => {
                 value={searchQuery}
                 onChange={event => setSearchQuery(event.target.value)}
                 placeholder="Search services, offices, weather, and LGU info"
-                className="min-w-0 flex-1 border-0 text-base font-medium text-gray-900 outline-none placeholder:text-gray-400"
+                className="min-w-0 flex-1 border-0 bg-transparent text-base font-medium text-gray-900 outline-none placeholder:text-gray-400"
                 aria-label="Search civic portal"
               />
               <button
